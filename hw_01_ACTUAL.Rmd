@@ -1,0 +1,27 @@
+---
+title: "hw_01_ACTUAL"
+author: "Samantha Rutledge"
+date: "9/22/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## About Me
+
+Hi all! Excited that I managed to (somehow) figure out this homework assignment :)
+My name is Samantha Rutledge (I prefer Sam), and I am a first-year PhD student in the Mason Lab over in the LSU Museum of Natural Sciences. When I'm not hunched over a computer screen or in class, I enjoy filling my time with running, cycling, birdwatching, reading, and sketching, as well as trying new things (e.g., bouldering), even if I end up failing epically (again, bouldering).
+
+
+```{bash engine.path = "C:/Program Files/Git/bin/bash.exe"}
+git --version
+```
+
+```{bash engine.path = "C:/Program Files/Git/bin/bash.exe"}
+R --version
+```
+
+
+
