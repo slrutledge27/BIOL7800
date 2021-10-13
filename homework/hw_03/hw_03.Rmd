@@ -77,17 +77,18 @@ x<-c(str_extract(top105,"^[^A-Z]{1,5}\\.\\d?+"))
 y <- c(na.omit(x))
 y
 ```
-
-```{r cars}
-summary(cars)
+Question 5
+```{r}
+z<- gsub('\\.$', '', y)
+z
+```
+```{r}
+v <-as.numeric(z)
+v
+```
+```{r}
+duplicated(v)
+v[duplicated(v)]
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
