@@ -1,0 +1,44 @@
+---
+title: "Homework 3"
+author: "Samantha Rutledge"
+date: "10/13/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+## Question 1
+
+```{r}
+set.seed(12) # to be reproducible
+A = matrix(data = runif(n = 1:500), nrow = 50, ncol = 10)
+colnames(A) = paste("lake", 1:10, sep = "_")
+```
+```{r}
+colMeans(A)
+```
+
+```{r}
+for(i in 1:ncol(A)){
+  print(mean(A[, i]))
+}
+```
+
+## Question 2
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
