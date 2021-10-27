@@ -69,7 +69,11 @@ str_split(x$Topic, pattern = " ")
 ```{r}
 w <- strsplit(x$Topic, split = " ")
 w
-unlist(w)
+w1 <- unlist(w)
+w1
+```
+```{r}
+sort(table(w1),decreasing=TRUE)[1:5]
 ```
 
 
