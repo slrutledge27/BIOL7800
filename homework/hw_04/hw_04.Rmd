@@ -56,6 +56,20 @@ y
 
 4. For the Topic column, split all values into words (hint: stringr::str_split()). Observe the values in the Topic column and use regular expression to specify the pattern in the stringr::str_split() or strsplit() function. Once this is done, you should get a list of list, you can use unlist() to convert it into a vector and name it as words. Use table() and sort() to find the top 5 most frequent words.
 
+```{r}
+z <- data.frame(do.call("rbind", strsplit(as.character(x$Topic), " ", fixed = TRUE)))
+z
+```
+```{r}
+within(x, Topic<-data.frame(do.call('rbind', strsplit(as.character(Topic), '', fixed=TRUE))))
+```
+```{r}
+str_split(x$Topic, pattern = " ")
+```
+```{r}
+strsplit(x$Topic, split = " ")
+```
+
 
 
 ## Including Plots
