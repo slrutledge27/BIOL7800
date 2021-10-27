@@ -67,7 +67,9 @@ within(x, Topic<-data.frame(do.call('rbind', strsplit(as.character(Topic), '', f
 str_split(x$Topic, pattern = " ")
 ```
 ```{r}
-strsplit(x$Topic, split = " ")
+w <- strsplit(x$Topic, split = " ")
+w
+unlist(w)
 ```
 
 
