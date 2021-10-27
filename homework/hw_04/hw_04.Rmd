@@ -34,6 +34,17 @@ x<- url_data %>%
 
 
 2. With the extracted data frame, create two new columns based on the Date column: month and day. month would be the month abbrevations from the Date column; day would be the numeric numbers from the Date column. Although you can use whatever approach to get this done (do not enter them by hand…), I suggest you try to practice regular expression here (sub() or stringr::str_extract()).
+```{r}
+library(stringr)
+x$day <- str_extract(x$Date, "\\d{2}") 
+x$month <- str_extract(x$Date, "\\D{3}")
+```
+
+
+```{r}
+x$day <- as.numeric(as.character(x$day))
+```
+
 
 3. With the data frame generated from Q2, use group_by() and summarise() to find out the number of lectures for each month, order the results by the number of lectures (high to low).
 
