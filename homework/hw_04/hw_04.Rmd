@@ -16,6 +16,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r}
+library(tidyverse)
+library(rvest)
 url_data <- "https://introdatasci.dlilab.com/schedule_materials/"
 url_data %>% 
   read_html()
