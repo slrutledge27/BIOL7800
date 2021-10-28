@@ -9,11 +9,9 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-1.  Use the rvest R package to scrape the schedule and materials table into R from the course webpage (https://introdatasci.dlilab.com/schedule_materials/). Read the documentation of rvest so you get a better idea about the functions provided by rvest and their usages
+## 1.  Use the rvest R package to scrape the schedule and materials table into R from the course webpage (https://introdatasci.dlilab.com/schedule_materials/). Read the documentation of rvest so you get a better idea about the functions provided by rvest and their usages
 
 
 
@@ -30,10 +28,11 @@ x<- url_data %>%
   read_html() %>% 
   html_element(css = css_selector) %>% 
   html_table()
+x
 ```
 
 
-2. With the extracted data frame, create two new columns based on the Date column: month and day. month would be the month abbrevations from the Date column; day would be the numeric numbers from the Date column. Although you can use whatever approach to get this done (do not enter them by hand…), I suggest you try to practice regular expression here (sub() or stringr::str_extract()).
+## 2. With the extracted data frame, create two new columns based on the Date column: month and day. month would be the month abbrevations from the Date column; day would be the numeric numbers from the Date column. Although you can use whatever approach to get this done (do not enter them by hand…), I suggest you try to practice regular expression here (sub() or stringr::str_extract()).
 ```{r}
 library(stringr)
 x$day <- str_extract(x$Date, "\\d{2}") 
@@ -43,29 +42,21 @@ x$month <- str_extract(x$Date, "\\D{3}")
 
 ```{r}
 x$day <- as.numeric(as.character(x$day))
+x
 ```
 
 
-3. With the data frame generated from Q2, use group_by() and summarise() to find out the number of lectures for each month, order the results by the number of lectures (high to low).
+## 3. With the data frame generated from Q2, use group_by() and summarise() to find out the number of lectures for each month, order the results by the number of lectures (high to low).
 
 ```{r}
-y <- x %>% group_by(month) %>% summarise(lecture_number = n() )
+y <- x %>% group_by(month) %>% summarise(lecture_number = n()) %>% arrange(desc(lecture_number))
 y
 ```
 
 
-4. For the Topic column, split all values into words (hint: stringr::str_split()). Observe the values in the Topic column and use regular expression to specify the pattern in the stringr::str_split() or strsplit() function. Once this is done, you should get a list of list, you can use unlist() to convert it into a vector and name it as words. Use table() and sort() to find the top 5 most frequent words.
+## 4. For the Topic column, split all values into words (hint: stringr::str_split()). Observe the values in the Topic column and use regular expression to specify the pattern in the stringr::str_split() or strsplit() function. Once this is done, you should get a list of list, you can use unlist() to convert it into a vector and name it as words. Use table() and sort() to find the top 5 most frequent words.
 
-```{r}
-z <- data.frame(do.call("rbind", strsplit(as.character(x$Topic), " ", fixed = TRUE)))
-z
-```
-```{r}
-within(x, Topic<-data.frame(do.call('rbind', strsplit(as.character(Topic), '', fixed=TRUE))))
-```
-```{r}
-str_split(x$Topic, pattern = " ")
-```
+
 ```{r}
 w <- strsplit(x$Topic, split = " ")
 w
@@ -78,12 +69,4 @@ sort(table(w1),decreasing=TRUE)[1:5]
 
 
 
-## Including Plots
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
