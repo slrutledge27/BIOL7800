@@ -83,4 +83,12 @@ n_100 <-n_100 %>%
 n_all <- left_join(n_1, n_10, by = "siteID") %>% left_join(n_100, by = "siteID")
 ```
 
+
+##4. 2 points) Transform n_all to a long format data frame named as n_all_long with three columns: siteID, spatial_scale, and richness. Hint: tidyr::pivot_longer()
+
+```{r}
+n_all_long <- n_all %>% 
+  pivot_longer(!siteID, names_to = "spatial_scale",values_to =  "richness")
+```
+
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
