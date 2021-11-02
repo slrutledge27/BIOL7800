@@ -1,0 +1,41 @@
+---
+title: "Untitled"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+if(!require(remotes)) install.packages("remotes")
+remotes::install_github("daijiang/neonDivData")
+```
+```{r}
+library(neonDivData)
+DT::datatable(head(neonDivData::data_plant,))
+head(data_plant)
+```
+```{r}
+data_plant$subspecies <- str_extract(data_plant$taxon_name, "\\d{2}") 
+data_plant$species<- str_extract(data_plant$taxon_name, "\\D{3}")
+data_plant$genus <- str_extract(data_plant$taxon_name, "\\d{2}")
+```
+
+
+```{r}
+sort(unique(data_plant$taxon_name))
+```
+```{r}
+data_plant_split <-data_plant %>%
+  separate(taxon_name, c("genus", "species", "subspecies"), " ")
+data_plant_split
+nrow(data_plant_split)
+nrow(data_plant)
+```
+```{r}
+genus_sample <- print(sample_n(data_plant_split, 100))
+genus_only <-print(genus_sample$genus)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
