@@ -77,4 +77,10 @@ n_100 <-n_100 %>%
   summarise(richness_100m2 = length(unique(taxon_name2)))
 ```
 
+##then, use dplyr::left_join() to join n_1, n_10, and n_100 as one data frame n_all, which should have 47 rows and four columns: siteID, richness_1m2, richness_10m2, and richness_100m2. Note: dplyr::left_join() can only join two data frames at each time, so you may use pipe (e.g., xyz = left_join(x, y) %>% left_join(z)).
+
+```{r}
+n_all <- left_join(n_1, n_10, by = "siteID") %>% left_join(n_100, by = "siteID")
+```
+
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
