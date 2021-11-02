@@ -91,4 +91,12 @@ n_all_long <- n_all %>%
   pivot_longer(!siteID, names_to = "spatial_scale",values_to =  "richness")
 ```
 
+##5. (2 points) Use ggplot2 and n_all_long to generate the plot below. Each line links the three values of each site (hint: aes(group = siteID)).
+
+```{r}
+site_richness <- ggplot(data = n_all_long, aes(x = spatial_scale, y = richness)) + geom_point() + xlab("Spatial Scales") + ylab("Species Richness")
+site_richness
+```
+
+
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
