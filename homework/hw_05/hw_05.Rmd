@@ -16,12 +16,8 @@ library(neonDivData)
 DT::datatable(head(neonDivData::data_plant,))
 head(data_plant)
 ```
-```{r}
-data_plant$subspecies <- str_extract(data_plant$taxon_name, "\\d{2}") 
-data_plant$species<- str_extract(data_plant$taxon_name, "\\D{3}")
-data_plant$genus <- str_extract(data_plant$taxon_name, "\\d{2}")
-```
 
+##1. (2 points) Create a new column named as genus for data_plant from the taxon_name column. The genus name is the first word of the scientific names. For example, if a record has taxon_name of "Bunchosia glandulosa (Cav.) DC.", then the genus is "Bunchosia". You probably want to use regular expression to do so. Take a look at all the names (sort(unique(data_plant$taxon_name))) to look at possible genus names and think about how to specify the regular expression pattern. Randomly select 100 values from the genus column and print it out.
 
 ```{r}
 sort(unique(data_plant$taxon_name))
@@ -37,5 +33,22 @@ nrow(data_plant)
 genus_sample <- print(sample_n(data_plant_split, 100))
 genus_only <-print(genus_sample$genus)
 ```
+
+##2.(2 points) Looking at the taxon_name values, it is clear that some scientific names probably are the same species (as different subspecies). For example, we may want to treat “Calamagrostis canadensis (Michx.) P. Beauv.” and “Calamagrostis canadensis (Michx.) P. Beauv. var. langsdorffii (Link) Inman” as the same species. Create a new column taxon_name2 for data_plant based on taxon_name. taxon_name2 should just contain the first two words of taxon_name. For example, “Calamagrostis canadensis (Michx.) P. Beauv.” and “Calamagrostis canadensis (Michx.) P. Beauv. var. langsdorffii (Link) Inman” should both be “Calamagrostis canadensis”. Randomly select 100 values from the taxon_name2 column and print it out.
+
+```{r}
+Dataframe1$COL2 <- gsub("([A-Za-z]+).*", "\\1", Dataframe1$COL1)
+```
+```{r}
+word(data_plant$taxon_name, 1,2, sep="_")
+```
+```{r}
+data_plant$taxon_name2<- str_extract(data_plant$taxon_name,"[^ ]+ [^ ]+")
+data_plant
+```
+str_extract(species_location, "[^_]+_[^_]+")
+
+
+##3.(2 points) Calculate the number of species (based on taxon_name2) of each site observed based on different sizes of plot:
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
