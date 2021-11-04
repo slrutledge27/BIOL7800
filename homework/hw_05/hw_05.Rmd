@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Rutledge_SL_Data_Science_Homework_5"
 output: pdf_document
 ---
 
@@ -12,6 +12,7 @@ if(!require(remotes)) install.packages("remotes")
 remotes::install_github("daijiang/neonDivData")
 ```
 ```{r}
+library(tidyverse)
 library(neonDivData)
 DT::datatable(head(neonDivData::data_plant,))
 head(data_plant)
@@ -50,7 +51,7 @@ taxon_sample2 <-print(taxon_sample1$taxon_name2)
 
 ##3.(2 points) Calculate the number of species (based on taxon_name2) of each site observed based on different sizes of plot:
 
-based on 1 m^2^ plots; this would be all observations with sample_area_m2 == "1". This would result in a data frame named as n_1 with two columns: siteID and richness_1m2.
+##based on 1 m^2^ plots; this would be all observations with sample_area_m2 == "1". This would result in a data frame named as n_1 with two columns: siteID and richness_1m2.
 
 ```{r}
 n_1 <- filter(data_plant, sample_area_m2 == "1")
@@ -59,7 +60,7 @@ n_1 <-n_1 %>%
   summarise(richness_1m2 = length(unique(taxon_name2)))
 ```
 
-based on 10 m^2^ plots; this would be all observations with sample_area_m2 %in% c("1", "10"). This would result in a data frame named as n_10 with two columns: siteID and richness_10m2.
+##based on 10 m^2^ plots; this would be all observations with sample_area_m2 %in% c("1", "10"). This would result in a data frame named as n_10 with two columns: siteID and richness_10m2.
 
 ```{r}
 n_10 <- filter(data_plant, sample_area_m2 %in% c("1", "10"))
@@ -68,7 +69,7 @@ n_10 <-n_10 %>%
   summarise(richness_10m2 = length(unique(taxon_name2)))
 ```
 
-based on 100 m^2^ plots; this would be all observations with sample_area_m2 %in% c("1", "10", "100"). This would result in a data frame named as n_100 with two columns: siteID and richness_100m2.
+##based on 100 m^2^ plots; this would be all observations with sample_area_m2 %in% c("1", "10", "100"). This would result in a data frame named as n_100 with two columns: siteID and richness_100m2.
 
 ```{r}
 n_100 <- filter(data_plant, sample_area_m2 %in% c("1", "10", "100"))
