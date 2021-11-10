@@ -23,3 +23,27 @@ Arctos_birds_Calif_2000_2020$coll_method_3 = ifelse(Arctos_birds_Calif_2000_2020
 Arctos_birds_Calif_2000_2020$coll_method_3 = ifelse(Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" & is.na(Arctos_birds_Calif_2000_2020$collectors), "salvage", ifelse(Arctos_birds_Calif_2000_2020$parts %in% c(grep("^skull\\w*", Arctos_birds_Calif_2000_2020$parts, value=T)), "salvage", 0))
 Arctos_birds_Calif_2000_2020$coll_method_3<-gsub("^(skull|skull; wing|skull; tissue).*", "", Arctos_birds_Calif_2000_2020$collecting_method)
 df2<-ifelse(Arctos_birds_Calif_2000_2020$coll_method_3 == 0 & Arctos_birds_Calif_2000_2020$parts %in% c(grep("^skull; wing\\w*$", Arctos_birds_Calif_2000_2020$parts, value=T)), gsub(0, "salvage", Arctos_birds_Calif_2000_2020$coll_method_3), )
+
+ifelse(Arctos_birds_Calif_2000_2020$parts %in% c(grep("^skull\\w*", Arctos_birds_Calif_2000_2020$spec_locality, value=T)), "salvage", 0
+       
+       
+       Arctos_birds_Calif_2000_2020$coll_method_3 = ifelse(Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" & is.na(Arctos_birds_Calif_2000_2020$collectors), "salvage", ifelse(Arctos_birds_Calif_2000_2020$parts %in% c(grep("^skull\\w*", Arctos_birds_Calif_2000_2020$parts, value=T)), "salvage",ifelse(grep("highway|hwy",
+                                                                                                                                                                                                                                                                                                                         Arctos_birds_Calif_2000_2020$spec_locality, 
+                                                                                                                                                                                                                                                                                                                         ignore.case = T, value = F),"salvage", 0)))       
+       
+       
+       
+       
+       
+       
+       
+       
+       ###Identify rows as salvage based on collectors, parts, and spec_locality ###
+Arctos_birds_Calif_2000_2020$coll_method_3 = ifelse(Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" & is.na(Arctos_birds_Calif_2000_2020$collectors), "salvage", ifelse(Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" & Arctos_birds_Calif_2000_2020$parts %in% c(grep("^skull\\w*", Arctos_birds_Calif_2000_2020$parts, value=T)), "salvage", ifelse(Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" & Arctos_birds_Calif_2000_2020$spec_locality %in% c(grep("highway|hwy", Arctos_birds_Calif_2000_2020$spec_locality, ignore.case = T, value = T)),"salvage", 0)))
+
+Arctos_birds_Calif_2000_2020$coll_method_3 = ifelse(Arctos_birds_Calif_2000_2020$coll_method_3 == 0 & Arctos_birds_Calif_2000_2020$parts %in% c(grep("^skull\\w*", Arctos_birds_Calif_2000_2020$parts, value=T)), "salvage",0)
+
+Arctos_birds_Calif_2000_2020$coll_method_3 = ifelse(Arctos_birds_Calif_2000_2020$coll_method_3 == 0 & Arctos_birds_Calif_2000_2020$spec_locality %in% c(grep("highway|hwy", Arctos_birds_Calif_2000_2020$spec_locality, ignore.case = T, value = F)),"salvage", 0)
+
+
+ifelse(grep("highway|hwy", Arctos_birds_Calif_2000_2020$spec_locality, ignore.case = T, value = F),"salvage", 0)))
