@@ -58,6 +58,11 @@ Arctos_birds_Calif_2000_2020$coll_method_3 = ifelse(Arctos_birds_Calif_2000_2020
                                                     
 
 
+### now remove some bits ###
+df <- Arctos_birds_Calif_2000_2020 %>% filter(!(parts=="egg" | parts  =="egg; nest" | parts == "nest; egg" | parts == "media; egg"))
+df2 <- df %>% filter(!(parts=="blood" | parts  =="blood; blood" | parts == "blood; blood; blood" | parts == "blood; blood; blood; blood"))
+
+
 ifelse(Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" & Arctos_birds_Calif_2000_2020$spec_locality %in% c(grepl("^[0-9]+", Arctos_birds_Calif_2000_2020$spec_locality, ignore.case = T)) & Arctos_birds_Calif_2000_2020$spec_locality %in% c(!grep(" mi | km | block | m | yds ", Arctos_birds_Calif_2000_2020$spec_locality,ignore.case = T)))
 Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" & grepl("^[0-9]+", Arctos_birds_Calif_2000_2020$spec_locality, ignore.case = T) &!grepl(" mi | km | block | m | yds ", Arctos_birds_Calif_2000_2020$spec_locality,ignore.case = T)
 ifelse(Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" & Arctos_birds_Calif_2000_2020$spec_locality[grepl("^[0-9]+", Arctos_birds_Calif_2000_2020$spec_locality, ignore.case = T)] & Arctos_birds_Calif_2000_2020$spec_locality[grepl("![' mi | km | block | m | yds ']", Arctos_birds_Calif_2000_2020$spec_locality,ignore.case = T)]),
