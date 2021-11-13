@@ -52,6 +52,25 @@ confint(get_coeff, level = 0.95)
 ```
 
 
+### d.
+
+```{r}
+par(mfrow = c(2, 2))
+plot(get_coeff)
+```
+
+### e. 
+
+Answer: estimated standard error for residuals obtained from summary table above = 0.3624, with 6 degrees of freedom
+
+### f. 
+
+```{r}
+predict(get_coeff, newdata = data.frame(x = 100), interval = "prediction")
+predict(get_coeff, newdata = data.frame(x = 100), interval = "confidence")
+```
+
+
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
 
