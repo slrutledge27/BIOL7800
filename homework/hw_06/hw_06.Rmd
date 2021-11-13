@@ -66,10 +66,20 @@ Answer: estimated standard error for residuals obtained from summary table above
 ### f. 
 
 ```{r}
-predict(get_coeff, newdata = data.frame(x = 100), interval = "prediction")
+
 predict(get_coeff, newdata = data.frame(x = 100), interval = "confidence")
 ```
 
+### g.
+```{r}
+predict(get_coeff, newdata = data.frame(x = 100), interval = "prediction")
+```
+
+
+### h.
+```{r}
+summary(get_coeff)$r.squared
+```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
