@@ -35,6 +35,21 @@ anova(get_coeff)
 
 Answer: Both t and F-statistic are significant, indicating that this regression model is a good fit for the data at hand
 
+### c.
+
+```{r}
+qt(0.05/2, 6,lower.tail = FALSE)
+```
+```{r}
+summary(get_coeff)$coefficients
+```
+
+
+
+```{r}
+confint(get_coeff, level = 0.95)
+
+```
 
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
