@@ -7,6 +7,37 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+##data
+x = c(110.5, 105.4, 118.1, 104.5, 93.6, 84.1, 77.8, 75.6)
+y = c(5.755, 5.939, 6.010, 6.545, 6.730, 6.750, 6.899, 7.862)
+```
+
+##1 The data consist of a predictor variable x, plant height, and a response variable y, grain yield, for eight varieties of rice.
+##  Consider fitting a simple linear regression model y_i = \beta_0 + \beta_1x_i+\varepsilon_iy 
+
+### a.
+```{r}
+get_coeff <- lm(y~x)
+get_coeff
+```
+Answer: ^B1 = -0.03717; ^B1 is the slope of the best fit line, determining the EXPECTED change in y as x changes
+
+###b
+
+```{r}
+summary(get_coeff)
+```
+```{r}
+anova(get_coeff)
+```
+
+
+Answer: Both t and F-statistic are significant, indicating that this regression model is a good fit for the data at hand
+
 
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+Answer: 
