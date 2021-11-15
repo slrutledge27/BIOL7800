@@ -1,6 +1,8 @@
 ---
 title: "hw_06"
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
@@ -78,6 +80,8 @@ Answer: estimated standard error for residuals obtained from summary table above
 predict(get_coeff, newdata = data.frame(x = 100), interval = "confidence")
 ```
 Answer: 6.419986 , with a lower and upper confidence interval of 6.096321 and 6.723651, respectively
+
+
 ### g.  Predict the yield of a new rice variety that has height x_{0}=100x 0=100 and provide a 95% prediction interval. Compare the results with those from (f), which one is wider?
 
 ```{r}
