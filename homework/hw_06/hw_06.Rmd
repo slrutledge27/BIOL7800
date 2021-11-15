@@ -7,35 +7,38 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+##1 The data consist of a predictor variable x, plant height, and a response variable y, grain yield, for eight varieties of rice.
+##  Consider fitting a simple linear regression model y_i = \beta_0 + \beta_1x_i+\varepsilon_iy , where εi∼iidN(0,σ^2), i = 1, 2, …, 8
+
 ```{r}
 ##data
 x = c(110.5, 105.4, 118.1, 104.5, 93.6, 84.1, 77.8, 75.6)
 y = c(5.755, 5.939, 6.010, 6.545, 6.730, 6.750, 6.899, 7.862)
 ```
 
-##1 The data consist of a predictor variable x, plant height, and a response variable y, grain yield, for eight varieties of rice.
-##  Consider fitting a simple linear regression model y_i = \beta_0 + \beta_1x_i+\varepsilon_iy 
 
-### a.
+### a. Give the least squares estimate (\hat{\beta_{1}}β1^) of the slope \beta_{1}β1 Give a brief interpretation of \hat{\beta_{1}}β1^
+
 ```{r}
 get_coeff <- lm(y~x)
 get_coeff
 ```
 Answer: ^B1 = -0.03717; ^B1 is the slope of the best fit line, determining the EXPECTED change in y as x changes
 
-###b
+###b Perform a test for H_{0}:\beta_{1}=0H0 β1=0 versus H_{a}:\beta_{1}\neq0Ha:β1=0 using an F test first and then a T test. Your conclusion?
 
 ```{r}
 summary(get_coeff)
+summary(get_coeff)$coefficients[,3-4]
 ```
 ```{r}
 anova(get_coeff)
 ```
 
 
-Answer: Both t and F-statistic are significant, indicating that this regression model is a good fit for the data at hand
+Answer: Both t and F-statistic are significant (i.e., p-values < 0.05), indicating that this regression model is a good fit for the data at hand
 
-### c.
+### c.  Construct a 95% confidence interval for the intercept \beta_{0}β0 by hand using the equation from the lecture, compare your results with those from R and briefly interpret the 95% confidence interval. You can get t_{n-2,\alpha/2}tn−2,α/2 using R code qt(alpha/2, n-2) where alpha is 0.05 here.
 
 ```{r}
 qt(0.05/2, 6,lower.tail = FALSE)
@@ -44,37 +47,42 @@ qt(0.05/2, 6,lower.tail = FALSE)
 summary(get_coeff)$coefficients
 ```
 
-
-
 ```{r}
 confint(get_coeff, level = 0.95)
 
 ```
 
 
-### d.
+### d. Give the fitted regression line (as a equation that looks like \hat{y}=a+bxy^=a+bx) and the raw residuals.
 
 ```{r}
+coef(get_coeff)[1]
+coef(get_coeff)["x"]
 par(mfrow = c(2, 2))
 plot(get_coeff)
 ```
+Line: Y = 10.13746 -0.03717469x
 
-### e. 
+### e. Give an estimate (\hat{\sigma}^{2}σ^2) of the error variance (\sigma^{2}σ2).
+
+```{r}
+summary(get_coeff)
+```
 
 Answer: estimated standard error for residuals obtained from summary table above = 0.3624, with 6 degrees of freedom
 
-### f. 
+### f.  Estimate the expected yield of a rice variety (\mu_{0}μ0) that has height x_{0}=100x0=100 and provide a 95% confidence interval.
 
 ```{r}
 
 predict(get_coeff, newdata = data.frame(x = 100), interval = "confidence")
 ```
-
+Answer: 6.419986 , with a lower and upper confidence interval of 6.096321 and 6.723651, respectively
 ### g.
 ```{r}
 predict(get_coeff, newdata = data.frame(x = 100), interval = "prediction")
 ```
-
+Answer: 6.419986, with a lower and upper prediction interval of 5.476038 and 7.363934, respectively
 
 ### h.
 ```{r}
