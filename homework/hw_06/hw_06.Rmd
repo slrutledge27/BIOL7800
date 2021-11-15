@@ -128,4 +128,6 @@ plot(fitted(d_lm_model ), d_resid)
 
 ### e. Compare the plots from (b), (c), and (d). Is there a meaningful difference between (c) and (d)? Explain. Which of the plots (b) or (d) gives a better indication of the lack of fit? Explain.
 
+Answer: Plots (a), (c), and (d) all show the non-linearity of the data, while (b) indicates the possibility of a linear relationship. (c) and (d) differ only in the scale on the x-axis; however, they both still indicate that a linear model will not fit the data at hand, so this difference is not very meaningful. Plot (d) gives a better indication of the lack of fit, due to the plotted data clearly being non-linear (the data in plot b, however, looks linear, therefore it does not provide insight into the lack of fit)
+
 ```{r}
