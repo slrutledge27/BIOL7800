@@ -93,32 +93,39 @@ summary(get_coeff)$r.squared
 ```
 Answer: About 75% of the variance in y (rice yield) is accounted for by the variance in x (rice height).
 
-##2.
+##2.This problem is designed to demonstrate why residuals are plotted against \hat{y}y^(instead of yy). Consider the following (artificial) data set that was constructed so that the relationship between yy and xx is quadratic. It is immediately evident that a linear fit is not appropriate. However, we adopt the point of view that the residual plot will provide diagnostic information on the lack of fit.
 
 ```{r}
 d <- data.frame(x = c(1, 2, 3, 4, 5, 6, 7, 8, 9),
 y = c(-2.08, -0.72, 0.28, 0.92, 1.20, 1.12, 0.68, -0.12, -1.28))
 ```
 
-### a. 
+### a. Plot yy vs. xx.
 ```{r}
 plot(d$x, d$y)
 ```
 
-### b.
-
+### b. Plot the raw residuals vs. yy.
 ```{r}
-
 d_lm_model = lm(y ~ x, data=d)
 d_lm_model
 d_resid = resid(d_lm_model)
 plot(d$y, d_resid)
+```
+
+### c. Plot the raw residuals vs. xx.
+```{r}
 plot(d$x, d_resid)
+
+```  
+
+P
+
+### d. lot the raw residuals vs. \hat{y}y^.
+```{r}
 plot(fitted(d_lm_model ), d_resid)
 ```
 
+### e. Compare the plots from (b), (c), and (d). Is there a meaningful difference between (c) and (d)? Explain. Which of the plots (b) or (d) gives a better indication of the lack of fit? Explain.
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-
-
-Answer: 
+```{r}
