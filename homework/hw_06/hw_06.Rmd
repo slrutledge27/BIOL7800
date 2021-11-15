@@ -78,16 +78,20 @@ Answer: estimated standard error for residuals obtained from summary table above
 predict(get_coeff, newdata = data.frame(x = 100), interval = "confidence")
 ```
 Answer: 6.419986 , with a lower and upper confidence interval of 6.096321 and 6.723651, respectively
-### g.
+### g.  Predict the yield of a new rice variety that has height x_{0}=100x 0=100 and provide a 95% prediction interval. Compare the results with those from (f), which one is wider?
+
 ```{r}
 predict(get_coeff, newdata = data.frame(x = 100), interval = "prediction")
 ```
 Answer: 6.419986, with a lower and upper prediction interval of 5.476038 and 7.363934, respectively
 
-### h.
+The prediction intervals are wider, because, in addition to accounting for the standard error of the mean value (the only error accounted for by estimating confidence intervals), the prediction intervals must also account for the error of the predicted value (i.e., prediction intervals must account for more error than confidence intervals, causing them to have a wider range)
+
+### h. Compute the coefficient of determination R^{2}R2 and briefly interpret what does it mean.
 ```{r}
 summary(get_coeff)$r.squared
 ```
+Answer: About 75% of the variance in y (rice yield) is accounted for by the variance in x (rice height).
 
 ##2.
 
