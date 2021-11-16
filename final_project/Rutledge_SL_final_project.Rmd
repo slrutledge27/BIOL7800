@@ -5,6 +5,8 @@ output: html_document
 
 
 ```{r}
+### Identify unknown/blank collecting methods ###
+Arctos_birds_Calif_2000_2020$coll_method_2 <- ifelse(is.na(Arctos_birds_Calif_2000_2020$collecting_method), "unknown","known")
 ###Identify rows as salvage based on collectors, parts, and spec_locality ###
 Arctos_birds_Calif_2000_2020$coll_method_4[Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" &
                                              grepl("^[0-9]+", Arctos_birds_Calif_2000_2020$spec_locality, ignore.case = T) &
