@@ -2,6 +2,10 @@
 title: "Rutledge_SL_final_project"
 output: html_document
 ---
+```{r}
+### load libraries ###
+library(tidyverse)
+```
 
 
 ```{r}
@@ -21,12 +25,15 @@ Arctos_birds_Calif_2000_2020$coll_method_3 = ifelse(Arctos_birds_Calif_2000_2020
 df <- Arctos_birds_Calif_2000_2020 %>% filter(!(parts=="egg" | parts  =="egg; nest" | parts == "nest; egg" | parts == "media; egg"))
 df2 <- df %>% filter(!(parts=="blood" | parts  =="blood; blood" | parts == "blood; blood; blood" | parts == "blood; blood; blood; blood"))
 ```
-
-
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+###Look at what's left
+df_still_unknown <- df2 %>% filter(coll_method_2 == "unknown")
+df_still_unknown_2 <- df2 %>% filter(is.na(coll_method_3)&coll_method_2 == "unknown")
 ```
+
+
+
+
 ```{r}
 
 
