@@ -31,6 +31,12 @@ df_still_unknown <- df2 %>% filter(coll_method_2 == "unknown")
 df_still_unknown_2 <- df2 %>% filter(is.na(coll_method_3)&coll_method_2 == "unknown")
 ```
 
+```{r}
+### remove entries with parts "unknown" or "nest", as well as age "embryo" or "chick", as well as observations and recordings
+df3 <- df2 %>% filter(!(parts=="unknown"|parts == "nest"|age=="embryo"|age=="chick"|collecting_method == "observation"|collecting_method =="observational"|collecting_method == "recording"))
+
+```
+
 
 
 
