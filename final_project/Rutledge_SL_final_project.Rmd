@@ -7,10 +7,19 @@ output: html_document
 library(tidyverse)
 ```
 
+```{r}
+### load appropriate libraries
+library(tidyverse)
+```
+
 
 ```{r}
 ### Identify unknown/blank collecting methods ###
 Arctos_birds_Calif_2000_2020$coll_method_2 <- ifelse(is.na(Arctos_birds_Calif_2000_2020$collecting_method), "unknown","known")
+```
+
+
+```{r}
 ###Identify rows as salvage based on collectors, parts, and spec_locality ###
 Arctos_birds_Calif_2000_2020$coll_method_4[Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" &
                                              grepl("^[0-9]+", Arctos_birds_Calif_2000_2020$spec_locality, ignore.case = T) &
@@ -28,15 +37,25 @@ df2 <- df %>% filter(!(parts=="blood" | parts  =="blood; blood" | parts == "bloo
 ```{r}
 ###Look at what's left
 df_still_unknown <- df2 %>% filter(coll_method_2 == "unknown")
-df_still_unknown_2 <- df2 %>% filter(is.na(coll_method_3)&coll_method_2 == "unknown")
 ```
 
 ```{r}
-### remove entries with parts "unknown" or "nest", as well as age "embryo" or "chick", as well as observations and recordings
-df3 <- df2 %>% filter(!(parts=="unknown"|parts == "nest"|age=="embryo"|age=="chick"|collecting_method == "observation"|collecting_method =="observational"|collecting_method == "recording"))
-
+df_still_unknown_2 <- df2 %>% filter(is.na(coll_method_3)&coll_method_2 == "unknown")
 ```
 
+
+```{r}
+### remove entries with parts "unknown" or "nest", as well as age "embryo" or "chick"
+df3 <- df2 %>% filter(!(parts=="nest" | parts  =="unknown"))
+df4 <- df3 %>% filter(!(age == "embryo" | age == "chick" | age == "downy chick" | age == "downy chick, completely covered in fuzz, eyes still closed" | age == "naked chick, eyes closed" | age == "downy chick, fuzz on body, eyes not open" | age == "downy chick, pre-fledge" | age == "downy fledgling" | age == "not yet fully fledged, still downy" | age == "skull unossified, downy (only slightly fuzzy on head & backside of the body" | age == "skull unossified, naked & downy (some fuzz on head and backside, eyes still closed)" | age == "skull unossified, transitioning from naked to downy, eyes closed" | age == "skull unossified, downy, eyes closed" | age == "skull unossified, between naked and downy (some fuzz on head and backside, eyes still closed)")) 
+```
+
+
+```{r}
+### assign coll_method_3 as "salvage" based on collectors "unknown", spec_locality "unknown" or AFB or Campus/School/Building/Zoo/Aviary/Donation/Dormitory/Windown-sill/Captive
+
+df3$coll_method_3 = ifelse(df3$coll_method_2 == "unknown" & is.na(df3$collectors), "salvage", ifelse(df3$coll_method_2 == "unknown" & df3$parts %in% c(grep("^skull\\w*", df3$parts, value=T)), "salvage", ifelse(df3$coll_method_2 == "unknown" & df3$spec_locality %in% c(grep("highway|hwy", df3$spec_locality, ignore.case = T, value = T)),"salvage", ifelse(df3$coll_method_4 == "salvage", "salvage",ifelse(df3$coll_method_2 == "unknown"& df3$collectors== "unknown", "salvage", ifelse(df3$coll_method_2 == "unknown" & df3$spec_locality == '"no specific locality recorded"|"Edwards AFB"|"Vandenberg Air Force Base"', "salvage", "0"))))))
+```
 
 
 
