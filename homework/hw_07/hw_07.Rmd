@@ -1,0 +1,12 @@
+---
+title: "hw_07"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Link to eliminat0r package:
+
+https://github.com/slrutledge27/eliminat0r
