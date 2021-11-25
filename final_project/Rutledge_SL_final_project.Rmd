@@ -63,6 +63,8 @@ df_still_unknown_5 <- df_still_unknown_4 %>% filter(!(spec_locality == "Aviary i
 ```{r}
 ### assigning salvage based on parts
 df4$coll_method_5 <- ifelse(df4$parts=="tissue" | df4$parts == "tissue; tissue sample" | df4$parts == "wing; tissue", "salvage", "unknown")
+
+df41 <- df4 %>% mutate(coll_method_5 = ifelse(df4$parts=="tissue" | df4$parts == "tissue; tissue sample" | df4$parts == "wing; tissue", "salvage", "unknown"))
 ```
 
 
