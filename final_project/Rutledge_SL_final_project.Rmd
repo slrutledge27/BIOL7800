@@ -24,9 +24,18 @@ Arctos_birds_Calif_2000_2020$coll_method_2 <- ifelse(is.na(Arctos_birds_Calif_20
 Arctos_birds_Calif_2000_2020$coll_method_4[Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" &
                                              grepl("^[0-9]+", Arctos_birds_Calif_2000_2020$spec_locality, ignore.case = T) &
                                              !grepl(" mi | km | block | m | yds ", Arctos_birds_Calif_2000_2020$spec_locality, 
-                                                    ignore.case = T)] = "salvage" 
+                                                    ignore.case = T)] = "salvage"
+
+### ACTUAL CHUNK ###
+Arctos1 <- Arctos_birds_Calif_2000_2020 %>% mutate(coll_method_4 = ifelse(coll_method_2 == "unknown" & grepl("^[0-9]+", spec_locality, ignore.case = T) & !grepl(" mi | km | block | m | yds ", spec_locality, ignore.case = T), "salvage", "unknown"))
+
+---------------------------------------------------------------
+
 
 Arctos_birds_Calif_2000_2020$coll_method_3 = ifelse(Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" & is.na(Arctos_birds_Calif_2000_2020$collectors), "salvage", ifelse(Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" & Arctos_birds_Calif_2000_2020$parts %in% c(grep("^skull\\w*", Arctos_birds_Calif_2000_2020$parts, value=T)), "salvage", ifelse(Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" & Arctos_birds_Calif_2000_2020$spec_locality %in% c(grep("highway|hwy", Arctos_birds_Calif_2000_2020$spec_locality, ignore.case = T, value = T)),"salvage", ifelse(Arctos_birds_Calif_2000_2020$coll_method_4 == "salvage", "salvage", 0))))
+
+### ACTUAL CHUNK ###
+Arctos2 <- Arctos1 %>% mutate(coll_method_3 = ifelse(coll_method_2 == "unknown" & is.na(collectors), "salvage", ifelse(coll_method_2 == "unknown" & parts %in% c(grep("^skull\\w*", parts, value=T)), "salvage", ifelse(coll_method_2 == "unknown" & spec_locality %in% c(grep("highway|hwy", spec_locality, ignore.case = T, value = T)),"salvage", ifelse(coll_method_4 == "salvage", "salvage", "unknown")))))
 ```
 
 ```{r}
