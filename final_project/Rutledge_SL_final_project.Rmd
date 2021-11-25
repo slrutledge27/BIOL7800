@@ -73,16 +73,29 @@ df5 <- df4 %>%
 ```
 
 ```{r}
-df5$active_salvage <- ifelse(is.na(df5$collecting_method) & df5$coll_method_3 == "salvage", "salvage", 
-         ifelse (df5$coll_method_3 == "salvage", "salvage", 
-           ifelse (df5$coll_method_5 == "salvage", "salvage", 
-             ifelse (df5$coll_method_6, "salvage", 
-               ifelse (df5$collecting_method == "dead on road" | df5$collecting_method == "died on barbed wire fence" | df5$collecting_method == "euthanized" | df5$collecting_method == "euthanized while at Wetlands and Wildlife Care Center" | df5$collecting_method == "euthanized while at WWCC" | df5$collecting_method == "found injured and transferred to WWCC where euthanized" | df5$collecting_method == "found injured, transferred to WWCC and euthanized" | df5$collecting_method == "found injured, transferred to WWCC where euthanized" | df5$collecting_method == "found injured, transferred to WWCC, 'wobbly, lies down often', and euthanized on 2019-08-11" | df5$collecting_method == "gift" | df5$collecting_method == "salavage" | df5$collecting_method == "salbage" | df5$collecting_method == "salvage (caught in Tomahawk trap)" | df5$collecting_method == "salvage" | df5$collecting_method == "salvage (mammal trap)" | df5$collecting_method == "salvaged" | df5$collecting_method == "salvage-hit by vehicle", "salvage", "active")
+### Assigning as salvage based on collecting method
+### First, deal with NAs
+df6 <- df5 %>% mutate(coll_NAs = ifelse(is.na(collecting_method), "unknown", "known"))
+df7 <- df6 %>% 
+    mutate(coll_method_7 = ifelse(collecting_method == "dead on road" | collecting_method == "died on barbed wire fence" | collecting_method == "euthanized" | collecting_method == "euthanized while at Wetlands and Wildlife Care Center" | collecting_method == "euthanized while at WWCC" | collecting_method == "found injured and transferred to WWCC where euthanized" | collecting_method == "found injured, transferred to WWCC and euthanized" | collecting_method == "found injured, transferred to WWCC where euthanized" | collecting_method == "found injured, transferred to WWCC, 'wobbly, lies down often', and euthanized on 2019-08-11" | collecting_method == "gift" | collecting_method == "salavage" | collecting_method == "salbage" | collecting_method == "salvage (caught in Tomahawk trap)" | collecting_method == "salvage" | collecting_method == "salvage (mammal trap)" | collecting_method == "salvaged" | collecting_method == "salvage-hit by vehicle", "salvage", ifelse(collecting_method == "feeder trap" | collecting_method == "feeder trap and observational" | collecting_method == "funnel trap" | collecting_method == "mistnet" | collecting_method == "mistnet and observational" | collecting_method == "netted" | collecting_method == "rat trap" | collecting_method == "shot" | collecting_method == "shotgun" | collecting_method == "trap" | collecting_method == "trapped with bow net", "active", ifelse(coll_NAs == "unknown", "unknown", "unknown"))))
+```
+
+
+
+```{r}
+df6$active_salvage <- df6 %>% ifelse(is.na(collecting_method) & coll_method_3 == "salvage", "salvage", 
+         ifelse (coll_method_3 == "salvage", "salvage", 
+           ifelse (coll_method_5 == "salvage", "salvage", 
+             ifelse (coll_method_6 == "salvage", "salvage", 
+               ifelse (coll_method_7 == "salvage", "salvage")
                )
              )
            )
          )
        
+
+df7 <- df6 %>% 
+    mutate(active_salvage = ifelse(coll_method_3 == "salvage", "salvage", ifelse(coll_method_5 == "salvage", "salvage", ifelse(coll_method_6 == "salvage", "salvage", ifelse(coll_method_7 == "salvage", "salvage", "active")))))
 
 ### assigning active_salvage
 df5$active_salvae <- df5 %>% 
