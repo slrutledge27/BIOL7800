@@ -150,6 +150,62 @@ active_data_county <- df_active %>%
 ```
 
 
+```{r}
+### merge datasets together to see how they compare by genus
+salvage_active_dataset_genus <-merge(salvage_data_genus, active_data_genus, by.x = "genus", by.y = "genus", all.x = TRUE)
+
+### rename columns for clarity
+salvage_active_dataset_genus %>% 
+  rename(
+    salvage_count = cnt.x,
+    active_count = cnt.y, salvage_prop = freq.x, active_prop = freq.y
+    )
+```
+
+```{r}
+salvage_active_dataset_county <-merge(salvage_data_county, active_data_county, by.x = "county", by.y = "county", all.x = TRUE)
+
+### rename columns for clarity
+salvage_active_dataset_county %>% 
+  rename(
+    salvage_count = cnt.x,
+    active_count = cnt.y, salvage_prop = freq.x, active_prop = freq.y
+    )
+```
+
+```{r}
+### histogram data
+
+boxplot(salvage_active_dataset_county$cnt.x ~ salvage_active_dataset_county$county)
+boxplot(salvage_active_dataset_county$cnt.y ~ salvage_active_dataset_county$county)
+```
+
+```{r}
+### now same for genus
+boxplot(salvage_active_dataset_genus$cnt.x ~ salvage_active_dataset_genus$genus)
+boxplot(salvage_active_dataset_genus$cnt.y ~ salvage_active_dataset_genus$genus)
+```
+
+
+```{r}
+### now for scatterplots
+ggplot(salvage_active_dataset_genus, aes(x=genus, y=cnt.y)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
+```
+
+
+```{r}
+ggplot(salvage_active_dataset_genus, aes(x=genus, y=cnt.x)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
+```
+
+
+```{r}
+### as above, but for county now
+ggplot(salvage_active_dataset_county, aes(x=county, y=cnt.y)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
+
+ggplot(salvage_active_dataset_county, aes(x=county, y=cnt.x)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
+```
+
+
 
 ------------------------------------------------------------------------------------
 ```{r}
