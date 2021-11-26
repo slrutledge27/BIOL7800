@@ -98,6 +98,15 @@ df7 <- df6 %>%
 ```
 
 
+```{r}
+### make column for genus
+library(stringi)
+df7$genus <- stri_extract_first_regex(df7$scientific_name, "\\S+")
+```
+
+
+
+
 
 ```{r}
 df6$active_salvage <- df6 %>% ifelse(is.na(collecting_method) & coll_method_3 == "salvage", "salvage", 
