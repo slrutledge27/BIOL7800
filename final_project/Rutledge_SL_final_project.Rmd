@@ -89,19 +89,34 @@ df51 <- df41 %>%
 ### Assigning as salvage based on collecting method
 ### First, deal with NAs
 df6 <- df51 %>% mutate(coll_NAs = ifelse(is.na(collecting_method), "unknown", "known"))
-
-### Now build another column, lumping together all coll_methods and assigning as active or salvage
-df7 <- df6 %>% mutate(coll_method = ifelse(coll_method_2 == "unknown" & coll_method_3 == "salvage", "salvage", ifelse(coll_method_2 == "unknown" & coll_method_4 == "salvage", "salvage", ifelse(coll_method_2 == "unknown" & coll_method_5 == "salvage","salvage", ifelse(coll_method_2 == "unknown" & coll_method_6 == "salvage", "salvage", ifelse(coll_method_2 == "unknown" & coll_NAs == "unknown", "active", "active"))))))
+df6$collecting_method[is.na(df6$collecting_method)] <- 0
 
 df7 <- df6 %>% 
-    mutate(coll_method_7 = ifelse(collecting_method == "dead on road" | collecting_method == "died on barbed wire fence" | collecting_method == "euthanized" | collecting_method == "euthanized while at Wetlands and Wildlife Care Center" | collecting_method == "euthanized while at WWCC" | collecting_method == "found injured and transferred to WWCC where euthanized" | collecting_method == "found injured, transferred to WWCC and euthanized" | collecting_method == "found injured, transferred to WWCC where euthanized" | collecting_method == "found injured, transferred to WWCC, 'wobbly, lies down often', and euthanized on 2019-08-11" | collecting_method == "gift" | collecting_method == "salavage" | collecting_method == "salbage" | collecting_method == "salvage (caught in Tomahawk trap)" | collecting_method == "salvage" | collecting_method == "salvage (mammal trap)" | collecting_method == "salvaged" | collecting_method == "salvage-hit by vehicle", "salvage", ifelse(collecting_method == "feeder trap" | collecting_method == "feeder trap and observational" | collecting_method == "funnel trap" | collecting_method == "mistnet" | collecting_method == "mistnet and observational" | collecting_method == "netted" | collecting_method == "rat trap" | collecting_method == "shot" | collecting_method == "shotgun" | collecting_method == "trap" | collecting_method == "trapped with bow net", "active", ifelse(coll_NAs == "unknown", "unknown", "unknown"))))
+    mutate(coll_method_7 = ifelse(collecting_method == "dead on road" | collecting_method == "died on barbed wire fence" | collecting_method == "euthanized" | collecting_method == "euthanized while at Wetlands and Wildlife Care Center" | collecting_method == "euthanized while at WWCC" | collecting_method == "found injured and transferred to WWCC where euthanized" | collecting_method == "found injured, transferred to WWCC and euthanized" | collecting_method == "found injured, transferred to WWCC where euthanized" | collecting_method == "found injured, transferred to WWCC, 'wobbly, lies down often', and euthanized on 2019-08-11" | collecting_method == "gift" | collecting_method == "salavage" | collecting_method == "salbage" | collecting_method == "salvage (caught in Tomahawk trap)" | collecting_method == "salvage" | collecting_method == "salvage (mammal trap)" | collecting_method == "salvaged" | collecting_method == "salvage-hit by vehicle", "salvage", "unknown"))
+
+### Assign known salvage and active
+df7 <- df6 %>% 
+    mutate(coll_method_7 = ifelse(collecting_method == "dead on road" | collecting_method == "died on barbed wire fence" | collecting_method == "euthanized" | collecting_method == "euthanized while at Wetlands and Wildlife Care Center" | collecting_method == "euthanized while at WWCC" | collecting_method == "found injured and transferred to WWCC where euthanized" | collecting_method == "found injured, transferred to WWCC and euthanized" | collecting_method == "found injured, transferred to WWCC where euthanized" | collecting_method == "found injured, transferred to WWCC, 'wobbly, lies down often', and euthanized on 2019-08-11" | collecting_method == "gift" | collecting_method == "salavage" | collecting_method == "salbage" | collecting_method == "salvage (caught in Tomahawk trap)" | collecting_method == "salvage" | collecting_method == "salvage (mammal trap)" | collecting_method == "salvaged" | collecting_method == "salvage-hit by vehicle", "salvage", ifelse(collecting_method == "feeder trap" | collecting_method == "feeder trap and observational" | collecting_method == "funnel trap" | collecting_method == "mistnet" | collecting_method == "mistnet and observational" | collecting_method == "netted" | collecting_method == "rat trap" | collecting_method == "shot" | collecting_method == "shotgun" | collecting_method == "trap" | collecting_method == "trapped with bow net", "active","unknown")))
+
+### Now build another column, lumping together all coll_methods and assigning as active or salvage
+df8 <- df7 %>% mutate(coll_method = ifelse(coll_method_2 == "unknown" & coll_method_3 == "salvage", "salvage", ifelse(coll_method_2 == "unknown" & coll_method_4 == "salvage", "salvage", ifelse(coll_method_2 == "unknown" & coll_method_5 == "salvage","salvage", ifelse(coll_method_2 == "unknown" & coll_method_6 == "salvage", "salvage", ifelse(coll_method_7 == "salvage", "salvage", ifelse(coll_method_7 == "active", "active", "active")))))))
+
+
 ```
 
 
 ```{r}
 ### make column for genus
 library(stringi)
-df7$genus <- stri_extract_first_regex(df7$scientific_name, "\\S+")
+df8$genus <- stri_extract_first_regex(df8$scientific_name, "\\S+")
+```
+
+
+```{r}
+### split data frame in two: active dataset and salvage dataset
+
+df_salvage <- df8[which(df8$coll_method == "salvage"),]
+df_active <- df8[which(df8$coll_method == "active"),]
 ```
 
 
