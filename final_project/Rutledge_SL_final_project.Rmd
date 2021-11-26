@@ -206,6 +206,22 @@ ggplot(salvage_active_dataset_county, aes(x=county, y=cnt.x)) + geom_point(color
 ```
 
 
+```{r}
+### now time for chi squares, using active percentages as expected values, for genus
+observed <- salvage_active_dataset_genus$freq.x
+expected <- salvage_active_dataset_genus$freq.y
+
+chisq.test(observed, expected)
+```
+
+```{r}
+### now time for chi squares, using active percentages as expected values, for county
+observed <- salvage_active_dataset_county$freq.x
+expected <- salvage_active_dataset_county$freq.y
+
+chisq.test(observed, expected)
+```
+
 
 ------------------------------------------------------------------------------------
 ```{r}
