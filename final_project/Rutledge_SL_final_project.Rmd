@@ -124,6 +124,30 @@ df_active <- df8[which(df8$coll_method == "active"),]
 genus_count<- df_salvage %>% group_by(genus)%>% summarize(count=n()) 
 county_count<- df_salvage %>% group_by(county)%>% summarize(count=n())
 ```
+```{r}
+### as above, but with proportions/percentages
+
+salvage_data_genus <- df_salvage %>%
+  group_by(genus) %>%
+  summarise(cnt = n()) %>%
+  mutate(freq = round(cnt / sum(cnt), 3))
+
+salvage_data_county <- df_salvage %>%
+  group_by(county) %>%
+  summarise(cnt = n()) %>%
+  mutate(freq = round(cnt / sum(cnt), 3))
+
+active_data_genus <- df_active %>%
+  group_by(genus) %>%
+  summarise(cnt = n()) %>%
+  mutate(freq = round(cnt / sum(cnt), 3))
+
+active_data_county <- df_active %>%
+  group_by(county) %>%
+  summarise(cnt = n()) %>%
+  mutate(freq = round(cnt / sum(cnt), 3))
+
+```
 
 
 
