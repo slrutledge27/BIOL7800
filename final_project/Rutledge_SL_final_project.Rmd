@@ -229,27 +229,35 @@ salvage_county_plot <- ggplot(salvage_active_dataset_county, aes(x="", y=cnt.x, 
   geom_bar(stat="identity", width=1, color="white") +
   coord_polar("y", start=0) +
   
-  theme_void()
+  theme_void()+theme(legend.position = "none")
+
+salvage_county_plot
 
 
 salvage_genus_plot <- ggplot(salvage_active_dataset_genus, aes(x="", y=cnt.x, fill=genus)) +
   geom_bar(stat="identity", width=1, color="white") +
   coord_polar("y", start=0) +
   
-  theme_void()
+  theme_void()+theme(legend.position = "none")
+
+salvage_genus_plot
 
 active_county_plot <- ggplot(salvage_active_dataset_county, aes(x="", y=cnt.y, fill=county)) +
   geom_bar(stat="identity", width=1, color="white") +
   coord_polar("y", start=0) +
   
-  theme_void()
+  theme_void()+theme(legend.position = "none")
+
+active_county_plot
 
 
 active_genus_plot <- ggplot(salvage_active_dataset_genus, aes(x="", y=cnt.y, fill=genus)) +
   geom_bar(stat="identity", width=1, color="white") +
   coord_polar("y", start=0) +
   
-  theme_void()
+  theme_void()+theme(legend.position = "none")
+
+active_genus_plot
 ```
 
 
