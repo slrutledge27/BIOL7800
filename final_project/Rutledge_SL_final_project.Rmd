@@ -189,20 +189,67 @@ boxplot(salvage_active_dataset_genus$cnt.y ~ salvage_active_dataset_genus$genus)
 
 ```{r}
 ### now for scatterplots
-ggplot(salvage_active_dataset_genus, aes(x=genus, y=cnt.y)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
+p1 <- ggplot(salvage_active_dataset_genus, aes(x=genus, y=cnt.y)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
+
+plot_1 <- p1 + theme(legend.position = "none",
+        axis.text.x = element_blank(), axis.ticks.x = element_blank(), panel.grid = element_blank()) + labs(x = "Genus", y = "Number of Specimens")
+plot_1
 ```
 
 
 ```{r}
-ggplot(salvage_active_dataset_genus, aes(x=genus, y=cnt.x)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
+p2 <- ggplot(salvage_active_dataset_genus, aes(x=genus, y=cnt.x)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
+
+plot_2 <- p2 + theme(legend.position = "none",
+        axis.text.x = element_blank(), axis.ticks.x = element_blank(), panel.grid = element_blank()) + labs(x = "Genus", y = "Number of Specimens")
+plot_2
 ```
 
 
 ```{r}
 ### as above, but for county now
-ggplot(salvage_active_dataset_county, aes(x=county, y=cnt.y)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
+p3 <- ggplot(salvage_active_dataset_county, aes(x=county, y=cnt.y)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
 
-ggplot(salvage_active_dataset_county, aes(x=county, y=cnt.x)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
+plot_3 <- p3 + theme(legend.position = "none",
+        axis.text.x = element_blank(), axis.ticks.x = element_blank(), panel.grid = element_blank()) + labs(x = "County", y = "Number of Specimens")
+plot_3
+
+p4<- ggplot(salvage_active_dataset_county, aes(x=county, y=cnt.x)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
+
+plot_4 <- p4 + theme(legend.position = "none",
+        axis.text.x = element_blank(), axis.ticks.x = element_blank(), panel.grid = element_blank()) + labs(x = "County", y = "Number of Specimens")
+plot_4
+```
+
+
+```{r}
+###pie chart figures:)
+
+salvage_county_plot <- ggplot(salvage_active_dataset_county, aes(x="", y=cnt.x, fill=county)) +
+  geom_bar(stat="identity", width=1, color="white") +
+  coord_polar("y", start=0) +
+  
+  theme_void()
+
+
+salvage_genus_plot <- ggplot(salvage_active_dataset_genus, aes(x="", y=cnt.x, fill=genus)) +
+  geom_bar(stat="identity", width=1, color="white") +
+  coord_polar("y", start=0) +
+  
+  theme_void()
+
+active_county_plot <- ggplot(salvage_active_dataset_county, aes(x="", y=cnt.y, fill=county)) +
+  geom_bar(stat="identity", width=1, color="white") +
+  coord_polar("y", start=0) +
+  
+  theme_void()
+
+
+active_genus_plot <- ggplot(salvage_active_dataset_genus, aes(x="", y=cnt.y, fill=genus)) +
+  geom_bar(stat="identity", width=1, color="white") +
+  coord_polar("y", start=0) +
+  
+  theme_void()
 ```
 
 
