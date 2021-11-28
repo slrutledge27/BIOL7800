@@ -120,9 +120,22 @@ df_active <- df8[which(df8$coll_method == "active"),]
 ```
 
 ```{r}
+### get top counties and genera for salvage and active datasets
+
+salvage_descend_county <- salvage_data_county[order(-salvage_data_county$cnt),]
+
+salvage_descend_genus <- salvage_data_genus[order(-salvage_data_genus$cnt),]
+
+active_descend_county <- active_data_county[order(-active_data_county$cnt),]
+
+active_descend_genus <- active_data_genus[order(-active_data_genus$cnt),]
+```
+
+
+```{r}
 ### now count genus and count county for salvage
-genus_count<- df_salvage %>% group_by(genus)%>% summarize(count=n()) 
-county_count<- df_salvage %>% group_by(county)%>% summarize(count=n())
+###genus_count<- df_salvage %>% group_by(genus)%>% summarize(count=n()) 
+###county_count<- df_salvage %>% group_by(county)%>% summarize(count=n())
 ```
 ```{r}
 ### as above, but with proportions/percentages
@@ -172,6 +185,13 @@ salvage_active_dataset_county %>%
     active_count = cnt.y, salvage_prop = freq.x, active_prop = freq.y
     )
 ```
+
+```{r}
+###get tables for county and genus
+
+table_1 <- table(df8$county, df8$cnt)
+```
+
 
 ```{r}
 ### histogram data
