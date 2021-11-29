@@ -6,7 +6,14 @@ output: html_document
 ```{r}
 ### load appropriate libraries
 library(tidyverse)
+library(readr)
 ```
+
+```{r}
+### Import dataset
+Arctos_birds_Calif_2000_2020 <- read_csv("final_project/Data/Arctos_birds_Calif_2000_2020.csv")
+```
+
 
 
 ```{r}
@@ -102,17 +109,6 @@ df_salvage <- df8[which(df8$coll_method == "salvage"),]
 df_active <- df8[which(df8$coll_method == "active"),]
 ```
 
-```{r}
-### get top counties and genera for salvage and active datasets
-
-salvage_descend_county <- salvage_data_county[order(-salvage_data_county$cnt),]
-
-salvage_descend_genus <- salvage_data_genus[order(-salvage_data_genus$cnt),]
-
-active_descend_county <- active_data_county[order(-active_data_county$cnt),]
-
-active_descend_genus <- active_data_genus[order(-active_data_genus$cnt),]
-```
 
 ```{r}
 ### as above, but with proportions/percentages
@@ -139,6 +135,17 @@ active_data_county <- df_active %>%
 
 ```
 
+```{r}
+### get top counties and genera for salvage and active datasets
+
+salvage_descend_county <- salvage_data_county[order(-salvage_data_county$cnt),]
+
+salvage_descend_genus <- salvage_data_genus[order(-salvage_data_genus$cnt),]
+
+active_descend_county <- active_data_county[order(-active_data_county$cnt),]
+
+active_descend_genus <- active_data_genus[order(-active_data_genus$cnt),]
+```
 
 ```{r}
 ### merge datasets together to see how they compare by genus
@@ -155,7 +162,7 @@ salvage_active_dataset_county <-merge(salvage_data_county, active_data_county, b
 ```{r}
 ###get tables for county and genus
 
-table_1 <- table(df8$county, df8$cnt)
+###table_1 <- table(df8$county, df8$cnt)
 ```
 
 
