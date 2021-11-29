@@ -2,10 +2,6 @@
 title: "Rutledge_SL_final_project"
 output: html_document
 ---
-```{r}
-### load libraries ###
-library(tidyverse)
-```
 
 ```{r}
 ### load appropriate libraries
@@ -20,19 +16,9 @@ Arctos_birds_Calif_2000_2020$coll_method_2 <- ifelse(is.na(Arctos_birds_Calif_20
 
 
 ```{r}
-###Identify rows as salvage based on collectors, parts, and spec_locality ###
-Arctos_birds_Calif_2000_2020$coll_method_4[Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" &
-                                             grepl("^[0-9]+", Arctos_birds_Calif_2000_2020$spec_locality, ignore.case = T) &
-                                             !grepl(" mi | km | block | m | yds ", Arctos_birds_Calif_2000_2020$spec_locality, 
-                                                    ignore.case = T)] = "salvage"
 
 ### ACTUAL CHUNK ###
 Arctos1 <- Arctos_birds_Calif_2000_2020 %>% mutate(coll_method_4 = ifelse(coll_method_2 == "unknown" & grepl("^[0-9]+", spec_locality, ignore.case = T) & !grepl(" mi | km | block | m | yds ", spec_locality, ignore.case = T), "salvage", "unknown"))
-
----------------------------------------------------------------
-
-
-Arctos_birds_Calif_2000_2020$coll_method_3 = ifelse(Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" & is.na(Arctos_birds_Calif_2000_2020$collectors), "salvage", ifelse(Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" & Arctos_birds_Calif_2000_2020$parts %in% c(grep("^skull\\w*", Arctos_birds_Calif_2000_2020$parts, value=T)), "salvage", ifelse(Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" & Arctos_birds_Calif_2000_2020$spec_locality %in% c(grep("highway|hwy", Arctos_birds_Calif_2000_2020$spec_locality, ignore.case = T, value = T)),"salvage", ifelse(Arctos_birds_Calif_2000_2020$coll_method_4 == "salvage", "salvage", 0))))
 
 ### ACTUAL CHUNK ###
 Arctos2 <- Arctos1 %>% mutate(coll_method_3 = ifelse(coll_method_2 == "unknown" & is.na(collectors), "salvage", ifelse(coll_method_2 == "unknown" & parts %in% c(grep("^skull\\w*", parts, value=T)), "salvage", ifelse(coll_method_2 == "unknown" & spec_locality %in% c(grep("highway|hwy", spec_locality, ignore.case = T, value = T)),"salvage", ifelse(coll_method_4 == "salvage", "salvage", "unknown")))))
@@ -70,9 +56,6 @@ df_still_unknown_5 <- df_still_unknown_4 %>% filter(!(spec_locality == "Aviary i
 
 
 ```{r}
-### assigning salvage based on parts
-df4$coll_method_5 <- ifelse(df4$parts=="tissue" | df4$parts == "tissue; tissue sample" | df4$parts == "wing; tissue", "salvage", "unknown")
-
 
 ### ACTUAL CHUNK
 df41 <- df4 %>% mutate(coll_method_5 = ifelse(df4$parts=="tissue" | df4$parts == "tissue; tissue sample" | df4$parts == "wing; tissue", "salvage", "unknown"))
@@ -86,11 +69,11 @@ df51 <- df41 %>%
 ```
 
 ```{r}
-### Assigning as salvage based on collecting method
-### First, deal with NAs
+### deal with NAs
 df6 <- df51 %>% mutate(coll_NAs = ifelse(is.na(collecting_method), "unknown", "known"))
 df6$collecting_method[is.na(df6$collecting_method)] <- 0
 
+### Assigning as salvage based on collecting method
 df7 <- df6 %>% 
     mutate(coll_method_7 = ifelse(collecting_method == "dead on road" | collecting_method == "died on barbed wire fence" | collecting_method == "euthanized" | collecting_method == "euthanized while at Wetlands and Wildlife Care Center" | collecting_method == "euthanized while at WWCC" | collecting_method == "found injured and transferred to WWCC where euthanized" | collecting_method == "found injured, transferred to WWCC and euthanized" | collecting_method == "found injured, transferred to WWCC where euthanized" | collecting_method == "found injured, transferred to WWCC, 'wobbly, lies down often', and euthanized on 2019-08-11" | collecting_method == "gift" | collecting_method == "salavage" | collecting_method == "salbage" | collecting_method == "salvage (caught in Tomahawk trap)" | collecting_method == "salvage" | collecting_method == "salvage (mammal trap)" | collecting_method == "salvaged" | collecting_method == "salvage-hit by vehicle", "salvage", "unknown"))
 
@@ -131,12 +114,6 @@ active_descend_county <- active_data_county[order(-active_data_county$cnt),]
 active_descend_genus <- active_data_genus[order(-active_data_genus$cnt),]
 ```
 
-
-```{r}
-### now count genus and count county for salvage
-###genus_count<- df_salvage %>% group_by(genus)%>% summarize(count=n()) 
-###county_count<- df_salvage %>% group_by(county)%>% summarize(count=n())
-```
 ```{r}
 ### as above, but with proportions/percentages
 
@@ -167,23 +144,12 @@ active_data_county <- df_active %>%
 ### merge datasets together to see how they compare by genus
 salvage_active_dataset_genus <-merge(salvage_data_genus, active_data_genus, by.x = "genus", by.y = "genus", all.x = TRUE)
 
-### rename columns for clarity
-salvage_active_dataset_genus %>% 
-  rename(
-    salvage_count = cnt.x,
-    active_count = cnt.y, salvage_prop = freq.x, active_prop = freq.y
-    )
 ```
 
 ```{r}
+### merge datasets together to see how they compare by county
 salvage_active_dataset_county <-merge(salvage_data_county, active_data_county, by.x = "county", by.y = "county", all.x = TRUE)
 
-### rename columns for clarity
-salvage_active_dataset_county %>% 
-  rename(
-    salvage_count = cnt.x,
-    active_count = cnt.y, salvage_prop = freq.x, active_prop = freq.y
-    )
 ```
 
 ```{r}
@@ -218,6 +184,7 @@ plot_1
 
 
 ```{r}
+### more scatterplots
 p2 <- ggplot(salvage_active_dataset_genus, aes(x=genus, y=cnt.x)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
 
 plot_2 <- p2 + theme(legend.position = "none",
@@ -227,7 +194,7 @@ plot_2
 
 
 ```{r}
-### as above, but for county now
+### as above, but scatterplots for county now
 p3 <- ggplot(salvage_active_dataset_county, aes(x=county, y=cnt.y)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
 
 plot_3 <- p3 + theme(legend.position = "none",
@@ -282,7 +249,7 @@ active_genus_plot
 
 
 ```{r}
-### now time for chi squares, using active percentages as expected values, for genus
+### now time for chi squares, using active percentages (calculated above) as expected values, for genus
 observed <- salvage_active_dataset_genus$freq.x
 expected <- salvage_active_dataset_genus$freq.y
 
@@ -290,7 +257,7 @@ chisq.test(observed, expected)
 ```
 
 ```{r}
-### now time for chi squares, using active percentages as expected values, for county
+### now time for chi squares, using active percentages (calculated above) as expected values, for county
 observed <- salvage_active_dataset_county$freq.x
 expected <- salvage_active_dataset_county$freq.y
 
@@ -298,93 +265,4 @@ chisq.test(observed, expected)
 ```
 
 
-------------------------------------------------------------------------------------
-```{r}
-df6$active_salvage <- df6 %>% ifelse(is.na(collecting_method) & coll_method_3 == "salvage", "salvage", 
-         ifelse (coll_method_3 == "salvage", "salvage", 
-           ifelse (coll_method_5 == "salvage", "salvage", 
-             ifelse (coll_method_6 == "salvage", "salvage", 
-               ifelse (coll_method_7 == "salvage", "salvage")
-               )
-             )
-           )
-         )
-       
 
-df7 <- df6 %>% 
-    mutate(active_salvage = ifelse(coll_method_3 == "salvage", "salvage", ifelse(coll_method_5 == "salvage", "salvage", ifelse(coll_method_6 == "salvage", "salvage", ifelse(coll_method_7 == "salvage", "salvage", "active")))))
-
-### assigning active_salvage
-df5$active_salvae <- df5 %>% 
-    ifelse(is.na(collecting_method) & coll_method_3 == "salvage", "salvage", ifelse(collecting_method == "unknown", "salvage", ifelse(collecting_method == "dead on road" | collecting_method == "died on barbed wire fence" | collecting_method == "euthanized" | collecting_method == "euthanized while at Wetlands and Wildlife Care Center" | collecting_method == "euthanized while at WWCC" | collecting_method == "found injured and transferred to WWCC where euthanized" | collecting_method == "found injured, transferred to WWCC and euthanized" | collecting_method == "found injured, transferred to WWCC where euthanized" | collecting_method == "found injured, transferred to WWCC, 'wobbly, lies down often', and euthanized on 2019-08-11" | collecting_method == "gift" | collecting_method == "salavage" | collecting_method == "salbage" | collecting_method == "salvage (caught in Tomahawk trap)" | collecting_method == "salvage" | collecting_method == "salvage (mammal trap)" | collecting_method == "salvaged" | collecting_method == "salvage-hit by vehicle", "salvage", ifelse(coll_method_3 == "salvage", "salvage", ifelse(coll_method_5 == "salvage", "salvage", ifelse(coll_method_6 == "salvage", "salvage", "active"))))))
-```
-
-
-
-```{r}
-df4$coll_method_5 <- ifelse(df4$parts=="tissue" | df4$parts == "tissue; tissue sample" | df4$parts == "wing; tissue", "salvage", 
-         ifelse (rem==1, "Friday", 
-           ifelse (rem==2, "Saturday", 
-             ifelse (rem==3, "Sunday", 
-               ifelse (rem==4, "Monday", 
-                 ifelse(rem==5, "Tuesday", "Wednesday")
-               )
-             )
-           )
-         )
-       )
-
-df5 <- df4 %>% 
-    filter(is.na(coll_method_3) & coll_method_2 == "unknown") %>%
-    mutate(coll_method_6 = ifelse(spec_locality == "Aviary in Oakland" | spec_locality == "aviary of Monica J. Albe, Oakland" | spec_locality == "San Diego Zoo" | spec_locality == "CAPTIVE, San Diego Zoo [probably]" | spec_locality == "CAPTIVE, San Diego Zoo" | spec_locality == "San Francisco Zoo, San Francisco" | spec_locality == "Zoological Society of San Diego" | spec_locality == "Zoological Society of San Diego, CAPTIVE" | spec_locality == "CAPTIVE Zoological Societ of San Diego" | spec_locality == "CAPTIVE Zoological Society of San Diego" | spec_locality == " San Diego: Sea World CAPTIVE" | spec_locality == "Amador High School, 1155 Santa Rita Rd., Pleasanton" | spec_locality == "Pittsburg High School, Pittsburg" | spec_locality == "no specific locality recorded" | spec_locality == "unknown" | spec_locality == "Life Sciences Building courtyard, University of California campus, Berkeley" | spec_locality == "Natural Resources Building, Mineral" | spec_locality == "Outside Earth and Marine Sciences Building, University of California, Santa Cruz" | spec_locality == "near south door of Valley Life Sciences Building, University of California campus, Berkeley" | spec_locality == "near Protein Design Labs (34801 Campus Drive), near Dumbarton Bridge, Fremont" | spec_locality == "W side of Dwinelle Hall, Univ. Calif. campus, Berkeley" | spec_locality == "in vicinity of breezeway between Birge and LeConte Halls, University of California campus, Berkeley" | spec_locality == "Stadium Rim Way between Centennial Rd. and Galey Rd., University of California campus, Berkeley" | spec_locality == "University of California campus, Berkeley" | spec_locality == "University of California Riverside campus, Riverside" | spec_locality == "north side of Hildebrand Hall, University of California campus, Berkeley" | spec_locality == "east side of Lewis Hall, University of California Berkeley campus" |spec_locality == "Unit 2 Dormitory, between Channing and Haste Streets, Berkeley" | spec_locality == "Strawberry Creek Lodge (1320 Addison Street), Berkeley" | spec_locality == "Davis" | spec_locality == "University of California Botanical Garden, Strawberry Canyon, Berkeley" | spec_locality == "Berkeley" | spec_locality == "Life Sciences Addition, University of California, Berkeley" | spec_locality == "Donner Lab, University of California, Berkeley" | spec_locality == "California Hall, University of California, Berkeley" | spec_locality == "Women's Faculty Club, University of California, Berkeley" | spec_locality == "Linsdale Library, Hastings Natural History Reservation" | spec_locality == "San Rafael, 24 Madrona Street" | spec_locality == "San Diego: Sea World CAPTIVE" | spec_locality == "Edwards AFB" | spec_locality == "classroom at Hastings Natural History Reservation" | spec_locality == "labs at Hastings Natural History Reservation, Carmel Valley" | spec_locality == "Lawrence Livermore National Lab" | spec_locality == "outside the Davis Lab, Hastings Natural History Reservation, Carmel Valley" | spec_locality == "Sacramento" | spec_locality == "El Cerrito" | spec_locality == "Ojai" | spec_locality == "Livermore" | spec_locality == "Inverness" | spec_locality == "Bolinas" | spec_locality == "Oakland" | spec_locality == "Pittsburg" | spec_locality == "Pleasant Valley" | spec_locality == "Bethel Island" | spec_locality == "Woodacre" | spec_locality == "Jamesburg" | spec_locality == "Nicasio" | spec_locality == "La Casa de Maria, 801 Ladera Lane, Santa Barbara" | spec_locality == "Anaheim" | spec_locality == "Pt. Mugu Naval Base, Air National Guard hanger" | spec_locality == "Carmel Valley" | spec_locality == "Hopland Research and Extension Center bunkhouse" | spec_locality == "Wildlife Gallery, Bolinas" | spec_locality == "Alameda Naval Station, Alameda" | spec_locality == "Mills College, Oakland", "salvage", 0))
-```
-
-
-
-```{r}
-
-df4$coll_method_5 <- df4 %>% ifelse(coll_method_2 == "unknown" & is.na(coll_method_3) & parts == "tissue", coll_method_5 == "salvage", ifelse(coll_method_2 == "unknown" & is.na(coll_method_3) & parts == "tissue; tissue sample", coll_method_5 == "salvage", ifelse(coll_method_2 == "unknown" & is.na(coll_method_3) & parts == "wing; tissue", coll_method_5 == "salvage", 0)))
-
-df4$coll_method_5 <- df4 %>% ifelse(coll_method_2 == "unknown" & coll_method_3 == "0" & parts == "tissue", coll_method_5 == "salvage", coll_method_5 =="0")
-
-
-
-```
-
-
-
-
-
-
-
-```{r}
-### assign coll_method_3 as "salvage" based on collectors "unknown", spec_locality "unknown" or AFB or Campus/School/Building/Zoo/Aviary/Donation/Dormitory/Windown-sill/Captive
-
-df4$coll_method_3 = ifelse(df4$coll_method_2 == "unknown" & is.na(df4$collectors), "salvage", ifelse(df4$coll_method_2 == "unknown" & df4$parts %in% c(grep("^skull\\w*", df4$parts, value=T)), "salvage", ifelse(df4$coll_method_2 == "unknown" & df4$spec_locality %in% c(grep("highway|hwy", df4$spec_locality, ignore.case = T, value = T)),"salvage", ifelse(df4$coll_method_4 == "salvage", "salvage",ifelse(df4$coll_method_2 == "unknown"& df4$collectors== "unknown", "salvage", ifelse(df4$coll_method_2 == "unknown" & df4$spec_locality == '"no specific locality recorded"|"Edwards AFB"|"Vandenberg Air Force Base"', "salvage", ifelse(df4$coll_method_2 == "unknown" & df4$spec_locality == "aviary", "salvage", 0))))))
-```
-
-
-
-```{r}
-
-
-### Identify rows that are still of unknown collecting method (i.e., unknown and 0 in coll_method_2 and coll_method_3 columns) as salvage based on address
-##First, form new column
-
-Arctos_birds_Calif_2000_2020$coll_method_4[Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" &
-                                             grepl("^[0-9]+", Arctos_birds_Calif_2000_2020$spec_locality, ignore.case = T) &
-                                             !grepl(" mi | km | block | m | yds ", Arctos_birds_Calif_2000_2020$spec_locality, 
-                                                    ignore.case = T)] = "salvage"  
-
-##Then, sub in coll_meth_3 based on coll_method_4 (i.e., the new column)
-
-Arctos_birds_Calif_2000_2020$coll_method_3<- ifelse(Arctos_birds_Calif_2000_2020$coll_method_4 == "salvage" gsub("0", "salvage", Arctos_birds_Calif_2000_2020$coll_method_3)
-Arctos_birds_Calif_2000_2020$coll_method_3 = ifelse(Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" & is.na(Arctos_birds_Calif_2000_2020$collectors), "salvage", ifelse(Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" & Arctos_birds_Calif_2000_2020$parts %in% c(grep("^skull\\w*", Arctos_birds_Calif_2000_2020$parts, value=T)), "salvage", ifelse(Arctos_birds_Calif_2000_2020$coll_method_2 == "unknown" & Arctos_birds_Calif_2000_2020$spec_locality %in% c(grep("highway|hwy", Arctos_birds_Calif_2000_2020$spec_locality, ignore.case = T, value = T)),"salvage", ifelse(Arctos_birds_Calif_2000_2020$coll_method_4 == "salvage", "salvage", 0))))
-                                                    
-
-
-
-```
-
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
