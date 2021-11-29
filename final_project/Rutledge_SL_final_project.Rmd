@@ -229,6 +229,17 @@ plot_4 <- p4 + theme(legend.position = "none",
 plot_4
 ```
 
+```{r}
+### now combine scatterplots
+q <- ggplot() +
+      # blue plot
+      geom_point(data=salvage_active_dataset_county, aes(x=county, y=cnt.x),color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2) +
+      # red plot
+      geom_point(data=salvage_active_dataset_county, aes(x=county, y=cnt.y), color = "grey33", fill ="red",shape = 21, alpha = 0.5, size = 2, stroke = 2 )+ theme(legend.position = "none",
+        axis.text.x = element_blank(), axis.ticks.x = element_blank(), panel.grid = element_blank()) + labs(x = "County", y = "Number of Specimens")
+
+```
+
 
 ```{r}
 ###pie chart figures:)
