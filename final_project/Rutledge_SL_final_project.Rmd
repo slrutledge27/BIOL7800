@@ -201,6 +201,20 @@ plot_2
 
 
 ```{r}
+### combine scatterplots
+p <- ggplot() +
+      # blue plot
+      geom_point(data=salvage_active_dataset_genus, aes(x=genus, y=cnt.x),color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2) +
+      # red plot
+      geom_point(data=salvage_active_dataset_genus, aes(x=genus, y=cnt.y), color = "grey33", fill ="red",shape = 21, alpha = 0.5, size = 2, stroke = 2 )+ theme(legend.position = "none",
+        axis.text.x = element_blank(), axis.ticks.x = element_blank(), panel.grid = element_blank()) + labs(x = "Genus", y = "Number of Specimens")
+
+
+
+```
+
+
+```{r}
 ### as above, but scatterplots for county now
 p3 <- ggplot(salvage_active_dataset_county, aes(x=county, y=cnt.y)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
 
