@@ -278,9 +278,12 @@ q <- ggplot() +
 
 ```
 
+##R Workflow: Data Analysis
+
+Two Chi Squares Goodness of Fit were conducted, one to determine whether the genera represented by salvaged specimens was statistically different from those represented by actively collected specimens, a second to compare the same for county representation. The percentages calculated for actively collected and salvaged specimens were inputted as expected and observed values, respectively.
 
 ```{r}
-### now time for chi squares, using active percentages (calculated above) as expected values, for genus
+### now time for chi squares, using active percentages (calculated above) as expected values, to compare genera representation
 observed <- salvage_active_dataset_genus$freq.x
 expected <- salvage_active_dataset_genus$freq.y
 
@@ -288,7 +291,7 @@ chisq.test(observed, expected)
 ```
 
 ```{r}
-### now time for chi squares, using active percentages (calculated above) as expected values, for county
+### now time for chi squares, using active percentages (calculated above) as expected values, to compare county representation
 observed <- salvage_active_dataset_county$freq.x
 expected <- salvage_active_dataset_county$freq.y
 
