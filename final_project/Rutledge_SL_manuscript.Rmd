@@ -91,7 +91,32 @@ Despite these concerns, no study has assessed the geographic or taxonomic extent
 # Methods
 
 ##Data 
-All data was obtained from the Arctos database (GIVE SOURCE), for all bird specimens collected within the last 20 years in the state of California that are currently housed at the Museum of Vertebrate Zoology, UC Berkley. Data was cleaned, wrangled, visualized, and analyzed in R (NAME VERSION) (see below). Both raw and final datasets are available from github repository (NAME REPOSITORY, PROVIDE LINK)
+All data was obtained from the Arctos database (GIVE SOURCE), for all bird specimens collected within the last 20 years in the state of California that are currently housed at the Museum of Vertebrate Zoology, UC Berkley. Data was cleaned, wrangled, visualized, and analyzed in R (NAME VERSION) (see below). Both raw and final datasets are available from github repository (NAME REPOSITORY, PROVIDE LINK). See below for R workflow.
+
+##R Workflow: Reading, Cleaning, Wrangling, Visualizing Data
+```{r}
+### load appropriate libraries
+library(tidyverse)
+library(readr)
+```
+
+```{r}
+### Import dataset
+Arctos_birds_Calif_2000_2020 <- read_csv("final_project/Data/Arctos_birds_Calif_2000_2020.csv")
+```
+
+```{r}
+### Identify unknown/blank collecting methods ###
+Arctos_birds_Calif_2000_2020$coll_method_2 <- ifelse(is.na(Arctos_birds_Calif_2000_2020$collecting_method), "unknown","known")
+```
+
+```{r}
+### Assign specimen entries as 'salvaged' if collecting method is unknown and specimen locality is an address ###
+Arctos1 <- Arctos_birds_Calif_2000_2020 %>% mutate(coll_method_4 = ifelse(coll_method_2 == "unknown" & grepl("^[0-9]+", spec_locality, ignore.case = T) & !grepl(" mi | km | block | m | yds ", spec_locality, ignore.case = T), "salvage", "unknown"))
+
+### Assign specimen entries as 'salvaged' if collecting method is unknown and parts is just a 'skull' and/or specimen locality is a highway###
+Arctos2 <- Arctos1 %>% mutate(coll_method_3 = ifelse(coll_method_2 == "unknown" & is.na(collectors), "salvage", ifelse(coll_method_2 == "unknown" & parts %in% c(grep("^skull\\w*", parts, value=T)), "salvage", ifelse(coll_method_2 == "unknown" & spec_locality %in% c(grep("highway|hwy", spec_locality, ignore.case = T, value = T)),"salvage", ifelse(coll_method_4 == "salvage", "salvage", "unknown")))))
+```
 
 Here is the method section. You can include equations easily. For inline equations, use $\text{var}(X) = p(1-p)$. For display equation, use
 
