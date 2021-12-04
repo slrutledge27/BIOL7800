@@ -90,6 +90,9 @@ Despite these concerns, no study has assessed the geographic or taxonomic extent
 
 # Methods
 
+##Data 
+All data was obtained from the Arctos database (GIVE SOURCE), for all bird specimens collected within the last 20 years in the state of California that are currently housed at the Museum of Vertebrate Zoology, UC Berkley. Data was cleaned, wrangled, visualized, and analyzed in R (NAME VERSION) (see below). Both raw and final datasets are available from github repository (NAME REPOSITORY, PROVIDE LINK)
+
 Here is the method section. You can include equations easily. For inline equations, use $\text{var}(X) = p(1-p)$. For display equation, use
 
 $$\text{var}(X) = p(1-p)$$
