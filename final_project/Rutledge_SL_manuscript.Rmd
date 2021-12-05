@@ -303,6 +303,22 @@ $$\text{var}(X) = p(1-p)$$
 
 ## Results
 
+Salvaged (n = NAME NUMBER) and actively collected (n = NAME NUMBER) specimens represented NAME PROPORTION and NAME PROPORTION of the specimens contained within the final dataset. For genera: NAME NUMBERS were represented, respectively (Figure 1). For county: NAME NUMBERS were represented (Figure 2). See Table 1 and Table 2 for genera and county counts, respectively, for salvaged and actively collected specimens. Chi squares were significant for both genera (LIST VALUES) and county (LIST VALUES), with salvaged specimens having significantly different proportions represented for genera and county than actively collected specimens. 
+
+#### Figures
+
+Insert figure by code chunk. And cross-ref it back as Figure \@ref(fig:figName).
+
+(ref:Total number of specimens representing ) **No - or _ in the caption ref.** No space at the end of this line!
+
+```{r figName, fig.width=7, fig.asp=1, fig.cap="(ref:captionFig1)"}
+ggplot(data = envi.sprich, aes(x = value, y = sprich)) +
+  geom_point() + geom_smooth(method = "lm") +
+  facet_wrap(~envi, scales = "free_x") + 
+  theme_bw()
+```
+
+
 
 #### Tables
 
