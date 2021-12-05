@@ -309,7 +309,13 @@ gfg_table
 
 
 ```{r}
-knitr::kable(salvage_descend_genus[1:171,1:2], col.names = c("Genus", "Specimen Count"), format="markdown")
+knitr::kable(salvage_descend_genus[1:171,1:2], col.names = c("Genus", "Specimen Count"), caption = "Table 1.1: The total number of salvaged specimens representing each genera", format="markdown")
+
+knitr::kable(active_descend_genus[1:171,1:2], col.names = c("Genus", "Specimen Count"), caption = "Table 1.2: The total number of actively collected specimens representing each genera", format="markdown")
+
+knitr::kable(salvage_descend_county[1:171,1:2], col.names = c("County", "Specimen Count"), caption = "Table 2.1: The total number of salvaged specimens representing each county", format="markdown")
+
+knitr::kable(active_descend_county[1:171,1:2], col.names = c("County", "Specimen Count"), caption = "Table 2.2: The total number of actively collected specimens representing each county", format="markdown")
 
 ```
 
