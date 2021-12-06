@@ -302,10 +302,7 @@ chisq.test(observed, expected)
 Table_1 = as.table(table(df8$coll_method))
 prop.table(Table_1)
 ```
-```{r}
-Table_2 =table(salvage_descend_genus$genus,salvage_descend_genus$cnt)
-gfg_table
-```
+
 
 
 ```{r}

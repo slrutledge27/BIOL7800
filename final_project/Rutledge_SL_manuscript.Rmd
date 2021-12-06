@@ -78,15 +78,15 @@ if(knitr::is_latex_output() | knitr::is_html_output()){
 
 # Introduction
 
-Natural history collections are vital sources of primary biological material, being utilized in a variety of studies across evolutionary biology, pathology, and ecotoxicology, among other disciplines (Lister et al. 2011, McClean et al. 2016, Rutledge & Barve in press ). Providing insight into temporal and spatial trends across species GIVE EXAMPLES, collections are vital for understanding how species and populations change over time, patterns that lay the foundation for conservation practices (Winker et al. 1991, Pyke & Ehrlich 2010, Rutledge & Barve in press). GIVE EXAMPLES OF CONSERVATION POLICIES. 
+Acting as repositories of the Earth's past and present biodiversity, natural history collections are vital sources of primary biological material. Preserving records of temporal and spatial trends in said biodiversity, collections have been (and continue to be) employed in a variety of studies across evolutionary biology, pathology, and ecotoxicology, among other disciplines (Lister et al. 2011, McClean et al. 2016, Rutledge & Barve in press ). Further, collections are vital for understanding how species and populations change over time, patterns that lay the foundation for conservation practices (Winker et al. 1991, Pyke & Ehrlich 2010, Rutledge & Barve in press). GIVE EXAMPLES OF CONSERVATION POLICIES. 
 
 Here is your introduction. It should describe clearly the rationale for the study being done and the previous work related with the study. It should also tell readers about your specific hypothese/questions being addressed. Citations will be like this [@adair_single-pool_2010], or [e.g., @clark_loss_2008], or [@eriksson_seed_1993; @williamson_dissolved_1999]
 
-However, to maintain such records of past and present of biological diversity, constant addition to collections is necessary. EXPLAIN WHY IN MORE DETAIL. Normally done via active collecting, current specimen collection has decreased noticeably in the past few decades, with many museums abstaining from this practice altogether (Sweet 2010, Schultz et al. 2021). Fueling this decrease is a simultaneous increase in public and professional resistance to collecting birds for research purposes, resistance that in turn hampers attempts by museums to obtain collecting permits (Sweet 2010). NAME WHY THIS IS UNFOUNDED CONCERN.  Consequently, many museums have turned to other methods of acquiring new specimens, including salvage. 
+However, to maintain such records of past and present of biological diversity, constant addition to collections is necessary. Without constant addidtions, the time series of specimens - essential to documenting trends (see above) - would be interuppted, limiting the collection's usefulness to present and future generations of researchers. Unfortunately, with many museums abstaining from this practice altogether (Sweet 2010, Schultz et al. 2021). This is primarily due to the growing public - and even professional resistance - to traditional active collecting (i.e., intentionally killing birds with the intent of placement in a natural history collection). Though for the most part based on misinformation and a lack of knowledge on the importance and impact of collecting (CITE), such resistance has nevertheless hampered attempts by museums to obtain collecting permits (Sweet 2010). NAME WHY THIS IS UNFOUNDED CONCERN.  Consequently, many museums have turned to other methods of acquiring new specimens, including salvage. 
 
-Salvaged specimens, broadly defined as any specimen that was not intentionally killed for placement within a museum collection (Sweet 2010), come in many forms, including victims of roadkill, euthanizations at wildlife hospitals, and building collisions, among others (Sweet 2010). Yet, salvaged specimens are likely an inadequate replacement for active collecting. Many salvaged specimens arrive to the museum in poor condition (limiting the amount of information, such as intact tissue samples and complete skeletons, that can be obtained) and/or without any geolocating information (key for any study requiring information on the specimen’s geographic context when collected) (Sweet 2010). Further, unintentional taxonomic and geographic biases may be introduced. Most salvaged specimens are gathered from areas that are open and easily accessible to humans (Sweet 2010). Areas and habitats that are harder to access (e.g., areas away from roads, rivers, etc.) may thus be underrepresented in collections. Further, many species falling victim to primary salvage sources, such as building collisions, are primarily migrants, potentially leading to an overrepresentation of such species in collections and an underrepresentation of more sedentary species and populations (Schultz et al. 2021). 
+Salvaged specimens, broadly defined as any specimen that was not intentionally killed for placement within a museum collection (Sweet 2010), come in many forms, including victims of roadkill, euthanizations at wildlife hospitals, and building collisions, among others (Sweet 2010). Yet, salvaged specimens are likely an inadequate replacement for active collecting. Many salvaged specimens arrive to the museum in poor condition (limiting the amount of information, such as intact tissue samples and complete skeletons, that can be obtained) and/or without any geographic information (key for any study requiring information on the specimen’s geographic context when collected) (Sweet 2010). Further, unintentional taxonomic and geographic biases may be introduced. Most salvaged specimens are gathered from areas that are open and easily accessible to humans (Sweet 2010). Areas and habitats that are harder to access (e.g., areas away from roads, rivers, etc.) may thus be underrepresented in collections. Further, many species falling victim to primary salvage sources, such as building collisions, are primarily migrants, potentially leading to an overrepresentation of such species in collections and an underrepresentation of more sedentary species and populations (Schultz et al. 2021). 
 
-Despite these concerns, no study has assessed the geographic or taxonomic extent covered by salvaged specimens. Here, I propose to conduct a case study on Californian birds within the collection of University of California (UC) Berkley’s Museum of Vertebrate Zoology, assessing the geographic and taxonomic coverage of salvaged versus actively collected museum specimens.
+Despite these concerns, no study has assessed the geographic or taxonomic extent covered by salvaged specimens. Here, I  conduct a case study on Californian birds within the collection of University of California (UC) Berkley’s Museum of Vertebrate Zoology, assessing the geographic (county) and taxonomic (genera) coverage of salvaged versus actively collected museum specimens.
 
 # Methods
 
@@ -297,9 +297,6 @@ expected <- salvage_active_dataset_county$freq.y
 
 chisq.test(observed, expected)
 ```
-Here is the method section. You can include equations easily. For inline equations, use $\text{var}(X) = p(1-p)$. For display equation, use
-
-$$\text{var}(X) = p(1-p)$$
 
 ## Results
 
@@ -309,7 +306,7 @@ Salvaged (n = NAME NUMBER) and actively collected (n = NAME NUMBER) specimens re
 
 Insert figure by code chunk. And cross-ref it back as Figure \@ref(fig:figName).
 
-(ref:Total number of specimens representing ) **No - or _ in the caption ref.** No space at the end of this line!
+(ref:captionFig1) **No - or _ in the caption ref.** No space at the end of this line!
 
 ```{r figName, fig.width=7, fig.asp=1, fig.cap="(ref:captionFig1)"}
 ggplot(data = envi.sprich, aes(x = value, y = sprich)) +
@@ -397,6 +394,10 @@ knitr::include_graphics(path = paste0(normalizePath(getwd()), "/Figs/plot.pdf"))
 ```
 
 More details can be found at [here](https://bookdown.org/yihui/bookdown/).
+
+# Discussion
+
+
 
 # References
 
