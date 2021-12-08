@@ -1,0 +1,321 @@
+---
+title: "Rutledge_SL_final_project"
+output: html_document
+---
+
+```{r}
+### load appropriate libraries
+library(tidyverse)
+library(readr)
+```
+
+```{r}
+### Import dataset
+Arctos_birds_Calif_2000_2020 <- read_csv("final_project/Data/Arctos_birds_Calif_2000_2020.csv")
+```
+
+
+
+```{r}
+### Identify unknown/blank collecting methods ###
+Arctos_birds_Calif_2000_2020$coll_method_2 <- ifelse(is.na(Arctos_birds_Calif_2000_2020$collecting_method), "unknown","known")
+```
+
+
+```{r}
+
+### Assign specimen entries as 'salvaged' if collecting method is unknown and specimen locality is an address ###
+Arctos1 <- Arctos_birds_Calif_2000_2020 %>% mutate(coll_method_4 = ifelse(coll_method_2 == "unknown" & grepl("^[0-9]+", spec_locality, ignore.case = T) & !grepl(" mi | km | block | m | yds ", spec_locality, ignore.case = T), "salvage", "unknown"))
+
+### Assign specimen entries as 'salvaged' if collecting method is unknown and parts is just a 'skull' and/or specimen locality is a highway###
+Arctos2 <- Arctos1 %>% mutate(coll_method_3 = ifelse(coll_method_2 == "unknown" & is.na(collectors), "salvage", ifelse(coll_method_2 == "unknown" & parts %in% c(grep("^skull\\w*", parts, value=T)), "salvage", ifelse(coll_method_2 == "unknown" & spec_locality %in% c(grep("highway|hwy", spec_locality, ignore.case = T, value = T)),"salvage", ifelse(coll_method_4 == "salvage", "salvage", "unknown")))))
+```
+
+```{r}
+### Remove entries w/ 'parts' that are just eggs, nests, or blood ###
+df <- Arctos2 %>% filter(!(parts=="egg" | parts  =="egg; nest" | parts == "nest; egg" | parts == "media; egg"))
+df2 <- df %>% filter(!(parts=="blood" | parts  =="blood; blood" | parts == "blood; blood; blood" | parts == "blood; blood; blood; blood"))
+```
+```{r}
+###Look at what's left
+df_still_unknown <- df2 %>% filter(coll_method_2 == "unknown")
+```
+
+```{r}
+df_still_unknown_2 <- df2 %>% filter(is.na(coll_method_3)&coll_method_2 == "unknown")
+```
+
+
+```{r}
+### remove entries with 'parts' that are 'unknown' or 'nest', as well as 'age' 'embryo' or 'chick'
+df3 <- df2 %>% filter(!(parts=="nest" | parts  =="unknown"))
+df4 <- df3 %>% filter(!(age == "embryo" | age == "chick" | age == "downy chick" | age == "downy chick, completely covered in fuzz, eyes still closed" | age == "naked chick, eyes closed" | age == "downy chick, fuzz on body, eyes not open" | age == "downy chick, pre-fledge" | age == "downy fledgling" | age == "not yet fully fledged, still downy" | age == "skull unossified, downy (only slightly fuzzy on head & backside of the body" | age == "skull unossified, naked & downy (some fuzz on head and backside, eyes still closed)" | age == "skull unossified, transitioning from naked to downy, eyes closed" | age == "skull unossified, downy, eyes closed" | age == "skull unossified, between naked and downy (some fuzz on head and backside, eyes still closed)")) 
+```
+
+```{r}
+### Again, look at what is left
+df_still_unknown_3 <- df4 %>% filter(is.na(coll_method_3)&coll_method_2 == "unknown")
+
+### reassigning tissues as salvage? exploring what's left...
+df_still_unknown_4 <- df_still_unknown_3 %>% filter(!(parts == "tissue" | parts == "tissue; tissue sample" | parts == "wing; tissue"))
+df_still_unknown_5 <- df_still_unknown_4 %>% filter(!(spec_locality == "Aviary in Oakland" | spec_locality == "aviary of Monica J. Albe, Oakland" | spec_locality == "San Diego Zoo" | spec_locality == "CAPTIVE, San Diego Zoo [probably]" | spec_locality == "CAPTIVE, San Diego Zoo" | spec_locality == "San Francisco Zoo, San Francisco" | spec_locality == "Zoological Society of San Diego" | spec_locality == "Zoological Society of San Diego, CAPTIVE" | spec_locality == "CAPTIVE Zoological Societ of San Diego" | spec_locality == "CAPTIVE Zoological Society of San Diego" | spec_locality == " San Diego: Sea World CAPTIVE" | spec_locality == "Amador High School, 1155 Santa Rita Rd., Pleasanton" | spec_locality == "Pittsburg High School, Pittsburg" | spec_locality == "no specific locality recorded" | spec_locality == "unknown" | spec_locality == "Life Sciences Building courtyard, University of California campus, Berkeley" | spec_locality == "Natural Resources Building, Mineral" | spec_locality == "Outside Earth and Marine Sciences Building, University of California, Santa Cruz" | spec_locality == "near south door of Valley Life Sciences Building, University of California campus, Berkeley" | spec_locality == "near Protein Design Labs (34801 Campus Drive), near Dumbarton Bridge, Fremont" | spec_locality == "W side of Dwinelle Hall, Univ. Calif. campus, Berkeley" | spec_locality == "in vicinity of breezeway between Birge and LeConte Halls, University of California campus, Berkeley" | spec_locality == "Stadium Rim Way between Centennial Rd. and Galey Rd., University of California campus, Berkeley" | spec_locality == "University of California campus, Berkeley" | spec_locality == "University of California Riverside campus, Riverside" | spec_locality == "north side of Hildebrand Hall, University of California campus, Berkeley" | spec_locality == "east side of Lewis Hall, University of California Berkeley campus" |spec_locality == "Unit 2 Dormitory, between Channing and Haste Streets, Berkeley" | spec_locality == "Strawberry Creek Lodge (1320 Addison Street), Berkeley" | spec_locality == "Davis" | spec_locality == "University of California Botanical Garden, Strawberry Canyon, Berkeley" | spec_locality == "Berkeley" | spec_locality == "Life Sciences Addition, University of California, Berkeley" | spec_locality == "Donner Lab, University of California, Berkeley" | spec_locality == "California Hall, University of California, Berkeley" | spec_locality == "Women's Faculty Club, University of California, Berkeley" | spec_locality == "Linsdale Library, Hastings Natural History Reservation" | spec_locality == "San Rafael, 24 Madrona Street" | spec_locality == "San Diego: Sea World CAPTIVE" | spec_locality == "Edwards AFB" | spec_locality == "classroom at Hastings Natural History Reservation" | spec_locality == "labs at Hastings Natural History Reservation, Carmel Valley" | spec_locality == "Lawrence Livermore National Lab" | spec_locality == "outside the Davis Lab, Hastings Natural History Reservation, Carmel Valley" | spec_locality == "Sacramento" | spec_locality == "El Cerrito" | spec_locality == "Ojai" | spec_locality == "Livermore" | spec_locality == "Inverness" | spec_locality == "Bolinas" | spec_locality == "Oakland" | spec_locality == "Pittsburg" | spec_locality == "Pleasant Valley" | spec_locality == "Bethel Island" | spec_locality == "Woodacre" | spec_locality == "Jamesburg" | spec_locality == "Nicasio" | spec_locality == "La Casa de Maria, 801 Ladera Lane, Santa Barbara" | spec_locality == "Anaheim" | spec_locality == "Pt. Mugu Naval Base, Air National Guard hanger" | spec_locality == "Carmel Valley" | spec_locality == "Hopland Research and Extension Center bunkhouse" | spec_locality == "Wildlife Gallery, Bolinas" | spec_locality == "Alameda Naval Station, Alameda" | spec_locality == "Mills College, Oakland"))
+```
+
+
+```{r}
+
+### Assign entries as 'salvage' if parts are just tissue/tissue sample/wing
+df41 <- df4 %>% mutate(coll_method_5 = ifelse(df4$parts=="tissue" | df4$parts == "tissue; tissue sample" | df4$parts == "wing; tissue", "salvage", "unknown"))
+```
+
+
+```{r}
+### assign as 'salvage' based on specimen locality ####
+df51 <- df41 %>% 
+    mutate(coll_method_6 = ifelse(spec_locality == "Aviary in Oakland" | spec_locality == "aviary of Monica J. Albe, Oakland" | spec_locality == "San Diego Zoo" | spec_locality == "CAPTIVE, San Diego Zoo [probably]" | spec_locality == "CAPTIVE, San Diego Zoo" | spec_locality == "San Francisco Zoo, San Francisco" | spec_locality == "Zoological Society of San Diego" | spec_locality == "Zoological Society of San Diego, CAPTIVE" | spec_locality == "CAPTIVE Zoological Societ of San Diego" | spec_locality == "CAPTIVE Zoological Society of San Diego" | spec_locality == " San Diego: Sea World CAPTIVE" | spec_locality == "Amador High School, 1155 Santa Rita Rd., Pleasanton" | spec_locality == "Pittsburg High School, Pittsburg" | spec_locality == "no specific locality recorded" | spec_locality == "unknown" | spec_locality == "Life Sciences Building courtyard, University of California campus, Berkeley" | spec_locality == "Natural Resources Building, Mineral" | spec_locality == "Outside Earth and Marine Sciences Building, University of California, Santa Cruz" | spec_locality == "near south door of Valley Life Sciences Building, University of California campus, Berkeley" | spec_locality == "near Protein Design Labs (34801 Campus Drive), near Dumbarton Bridge, Fremont" | spec_locality == "W side of Dwinelle Hall, Univ. Calif. campus, Berkeley" | spec_locality == "in vicinity of breezeway between Birge and LeConte Halls, University of California campus, Berkeley" | spec_locality == "Stadium Rim Way between Centennial Rd. and Galey Rd., University of California campus, Berkeley" | spec_locality == "University of California campus, Berkeley" | spec_locality == "University of California Riverside campus, Riverside" | spec_locality == "north side of Hildebrand Hall, University of California campus, Berkeley" | spec_locality == "east side of Lewis Hall, University of California Berkeley campus" |spec_locality == "Unit 2 Dormitory, between Channing and Haste Streets, Berkeley" | spec_locality == "Strawberry Creek Lodge (1320 Addison Street), Berkeley" | spec_locality == "Davis" | spec_locality == "University of California Botanical Garden, Strawberry Canyon, Berkeley" | spec_locality == "Berkeley" | spec_locality == "Life Sciences Addition, University of California, Berkeley" | spec_locality == "Donner Lab, University of California, Berkeley" | spec_locality == "California Hall, University of California, Berkeley" | spec_locality == "Women's Faculty Club, University of California, Berkeley" | spec_locality == "Linsdale Library, Hastings Natural History Reservation" | spec_locality == "San Rafael, 24 Madrona Street" | spec_locality == "San Diego: Sea World CAPTIVE" | spec_locality == "Edwards AFB" | spec_locality == "classroom at Hastings Natural History Reservation" | spec_locality == "labs at Hastings Natural History Reservation, Carmel Valley" | spec_locality == "Lawrence Livermore National Lab" | spec_locality == "outside the Davis Lab, Hastings Natural History Reservation, Carmel Valley" | spec_locality == "Sacramento" | spec_locality == "El Cerrito" | spec_locality == "Ojai" | spec_locality == "Livermore" | spec_locality == "Inverness" | spec_locality == "Bolinas" | spec_locality == "Oakland" | spec_locality == "Pittsburg" | spec_locality == "Pleasant Valley" | spec_locality == "Bethel Island" | spec_locality == "Woodacre" | spec_locality == "Jamesburg" | spec_locality == "Nicasio" | spec_locality == "La Casa de Maria, 801 Ladera Lane, Santa Barbara" | spec_locality == "Anaheim" | spec_locality == "Pt. Mugu Naval Base, Air National Guard hanger" | spec_locality == "Carmel Valley" | spec_locality == "Hopland Research and Extension Center bunkhouse" | spec_locality == "Wildlife Gallery, Bolinas" | spec_locality == "Alameda Naval Station, Alameda" | spec_locality == "Mills College, Oakland", "salvage", "unknown"))
+```
+
+```{r}
+### reassign NAs as '0' to prevent 'NA' output in new column ###
+df6 <- df51 %>% mutate(coll_NAs = ifelse(is.na(collecting_method), "unknown", "known"))
+df6$collecting_method[is.na(df6$collecting_method)] <- 0
+
+### Assigning as salvage based on collecting method
+df7 <- df6 %>% 
+    mutate(coll_method_7 = ifelse(collecting_method == "dead on road" | collecting_method == "died on barbed wire fence" | collecting_method == "euthanized" | collecting_method == "euthanized while at Wetlands and Wildlife Care Center" | collecting_method == "euthanized while at WWCC" | collecting_method == "found injured and transferred to WWCC where euthanized" | collecting_method == "found injured, transferred to WWCC and euthanized" | collecting_method == "found injured, transferred to WWCC where euthanized" | collecting_method == "found injured, transferred to WWCC, 'wobbly, lies down often', and euthanized on 2019-08-11" | collecting_method == "gift" | collecting_method == "salavage" | collecting_method == "salbage" | collecting_method == "salvage (caught in Tomahawk trap)" | collecting_method == "salvage" | collecting_method == "salvage (mammal trap)" | collecting_method == "salvaged" | collecting_method == "salvage-hit by vehicle", "salvage", "unknown"))
+
+### Assign entries with known 'collecting method' as 'salvage' or 'active'
+df7 <- df6 %>% 
+    mutate(coll_method_7 = ifelse(collecting_method == "dead on road" | collecting_method == "died on barbed wire fence" | collecting_method == "euthanized" | collecting_method == "euthanized while at Wetlands and Wildlife Care Center" | collecting_method == "euthanized while at WWCC" | collecting_method == "found injured and transferred to WWCC where euthanized" | collecting_method == "found injured, transferred to WWCC and euthanized" | collecting_method == "found injured, transferred to WWCC where euthanized" | collecting_method == "found injured, transferred to WWCC, 'wobbly, lies down often', and euthanized on 2019-08-11" | collecting_method == "gift" | collecting_method == "salavage" | collecting_method == "salbage" | collecting_method == "salvage (caught in Tomahawk trap)" | collecting_method == "salvage" | collecting_method == "salvage (mammal trap)" | collecting_method == "salvaged" | collecting_method == "salvage-hit by vehicle", "salvage", ifelse(collecting_method == "feeder trap" | collecting_method == "feeder trap and observational" | collecting_method == "funnel trap" | collecting_method == "mistnet" | collecting_method == "mistnet and observational" | collecting_method == "netted" | collecting_method == "rat trap" | collecting_method == "shot" | collecting_method == "shotgun" | collecting_method == "trap" | collecting_method == "trapped with bow net", "active","unknown")))
+
+### Now build another column, lumping together all coll_methods and assigning as active or salvage
+df8 <- df7 %>% mutate(coll_method = ifelse(coll_method_2 == "unknown" & coll_method_3 == "salvage", "salvage", ifelse(coll_method_2 == "unknown" & coll_method_4 == "salvage", "salvage", ifelse(coll_method_2 == "unknown" & coll_method_5 == "salvage","salvage", ifelse(coll_method_2 == "unknown" & coll_method_6 == "salvage", "salvage", ifelse(coll_method_7 == "salvage", "salvage", ifelse(coll_method_7 == "active", "active", "active")))))))
+
+
+```
+
+
+```{r}
+### make column for genus
+library(stringi)
+df8$genus <- stri_extract_first_regex(df8$scientific_name, "\\S+")
+```
+
+
+```{r}
+### split data frame in two: active dataset and salvage dataset
+
+df_salvage <- df8[which(df8$coll_method == "salvage"),]
+df_active <- df8[which(df8$coll_method == "active"),]
+```
+
+
+```{r}
+### Calculate count, proportions/percentages for salvaged and actively collected specimens for county and genera ###
+
+salvage_data_genus <- df_salvage %>%
+  group_by(genus) %>%
+  summarise(cnt = n()) %>%
+  mutate(freq = round(cnt / sum(cnt), 3))
+
+salvage_data_county <- df_salvage %>%
+  group_by(county) %>%
+  summarise(cnt = n()) %>%
+  mutate(freq = round(cnt / sum(cnt), 3))
+
+active_data_genus <- df_active %>%
+  group_by(genus) %>%
+  summarise(cnt = n()) %>%
+  mutate(freq = round(cnt / sum(cnt), 3))
+
+active_data_county <- df_active %>%
+  group_by(county) %>%
+  summarise(cnt = n()) %>%
+  mutate(freq = round(cnt / sum(cnt), 3))
+
+```
+
+```{r}
+### get top counties and genera for salvage and active datasets
+
+salvage_descend_county <- salvage_data_county[order(-salvage_data_county$cnt),]
+
+salvage_descend_genus <- salvage_data_genus[order(-salvage_data_genus$cnt),]
+
+active_descend_county <- active_data_county[order(-active_data_county$cnt),]
+
+active_descend_genus <- active_data_genus[order(-active_data_genus$cnt),]
+```
+
+
+```{r}
+### merge datasets together to see how they compare by genus
+salvage_active_dataset_genus <-merge(salvage_data_genus, active_data_genus, by.x = "genus", by.y = "genus", all.x = TRUE)
+
+```
+
+```{r}
+### merge datasets together to see how they compare by county
+salvage_active_dataset_county <-merge(salvage_data_county, active_data_county, by.x = "county", by.y = "county", all.x = TRUE)
+
+```
+
+```{r}
+###get tables for county and genus
+
+###table_1 <- table(df8$county, df8$cnt)
+```
+
+
+```{r}
+### histogram data
+
+boxplot(salvage_active_dataset_county$cnt.x ~ salvage_active_dataset_county$county)
+boxplot(salvage_active_dataset_county$cnt.y ~ salvage_active_dataset_county$county)
+```
+
+```{r}
+### now same for genus
+boxplot(salvage_active_dataset_genus$cnt.x ~ salvage_active_dataset_genus$genus)
+boxplot(salvage_active_dataset_genus$cnt.y ~ salvage_active_dataset_genus$genus)
+```
+
+
+```{r}
+### now for scatterplots
+p1 <- ggplot(salvage_active_dataset_genus, aes(x=genus, y=cnt.y)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
+
+plot_1 <- p1 + theme(legend.position = "none",
+        axis.text.x = element_blank(), axis.ticks.x = element_blank(), panel.grid = element_blank()) + labs(x = "Genus", y = "Number of Specimens")
+plot_1
+```
+
+
+```{r}
+### more scatterplots
+p2 <- ggplot(salvage_active_dataset_genus, aes(x=genus, y=cnt.x)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
+
+plot_2 <- p2 + theme(legend.position = "none",
+        axis.text.x = element_blank(), axis.ticks.x = element_blank(), panel.grid = element_blank()) + labs(x = "Genus", y = "Number of Specimens")
+plot_2
+```
+
+
+```{r}
+### combine scatterplots
+p <- ggplot() +
+      # blue plot
+      geom_point(data=salvage_active_dataset_genus, aes(x=genus, y=cnt.x),color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2) +
+      # red plot
+      geom_point(data=salvage_active_dataset_genus, aes(x=genus, y=cnt.y), color = "grey33", fill ="red",shape = 21, alpha = 0.5, size = 2, stroke = 2 )+ theme(legend.position = "none",
+        axis.text.x = element_blank(), axis.ticks.x = element_blank(), panel.grid = element_blank()) + labs(x = "Genus", y = "Number of Specimens")
+
+
+
+```
+
+
+```{r}
+### as above, but scatterplots for county now
+p3 <- ggplot(salvage_active_dataset_county, aes(x=county, y=cnt.y)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
+
+plot_3 <- p3 + theme(legend.position = "none",
+        axis.text.x = element_blank(), axis.ticks.x = element_blank(), panel.grid = element_blank()) + labs(x = "County", y = "Number of Specimens")
+plot_3
+
+p4<- ggplot(salvage_active_dataset_county, aes(x=county, y=cnt.x)) + geom_point(color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2)
+
+plot_4 <- p4 + theme(legend.position = "none",
+        axis.text.x = element_blank(), axis.ticks.x = element_blank(), panel.grid = element_blank()) + labs(x = "County", y = "Number of Specimens")
+plot_4
+```
+
+```{r}
+### now combine scatterplots
+q <- ggplot() +
+      # blue plot
+      geom_point(data=salvage_active_dataset_county, aes(x=county, y=cnt.x),color = "grey33", fill = "darkturquoise", shape = 21, alpha = 0.5, size = 2, stroke = 2) +
+      # red plot
+      geom_point(data=salvage_active_dataset_county, aes(x=county, y=cnt.y), color = "grey33", fill ="red",shape = 21, alpha = 0.5, size = 2, stroke = 2 )+ theme(legend.position = "none",
+        axis.text.x = element_blank(), axis.ticks.x = element_blank(), panel.grid = element_blank()) + labs(x = "County", y = "Number of Specimens")
+
+```
+
+
+```{r}
+###pie chart figures:)
+
+salvage_county_plot <- ggplot(salvage_active_dataset_county, aes(x="", y=cnt.x, fill=county)) +
+  geom_bar(stat="identity", width=1, color="white") +
+  coord_polar("y", start=0) +
+  
+  theme_void()+theme(legend.position = "none")
+
+salvage_county_plot
+
+
+salvage_genus_plot <- ggplot(salvage_active_dataset_genus, aes(x="", y=cnt.x, fill=genus)) +
+  geom_bar(stat="identity", width=1, color="white") +
+  coord_polar("y", start=0) +
+  
+  theme_void()+theme(legend.position = "none")
+
+salvage_genus_plot
+
+active_county_plot <- ggplot(salvage_active_dataset_county, aes(x="", y=cnt.y, fill=county)) +
+  geom_bar(stat="identity", width=1, color="white") +
+  coord_polar("y", start=0) +
+  
+  theme_void()+theme(legend.position = "none")
+
+active_county_plot
+
+
+active_genus_plot <- ggplot(salvage_active_dataset_genus, aes(x="", y=cnt.y, fill=genus)) +
+  geom_bar(stat="identity", width=1, color="white") +
+  coord_polar("y", start=0) +
+  
+  theme_void()+theme(legend.position = "none")
+
+active_genus_plot
+```
+
+
+```{r}
+### now time for chi squares, using active percentages (calculated above) as expected values, for genus
+observed <- salvage_active_dataset_genus$freq.x
+expected <- salvage_active_dataset_genus$freq.y
+
+chisq.test(observed, expected)
+```
+
+```{r}
+### now time for chi squares, using active percentages (calculated above) as expected values, for county
+observed <- salvage_active_dataset_county$freq.x
+expected <- salvage_active_dataset_county$freq.y
+
+chisq.test(observed, expected)
+```
+
+
+```{r}
+Table_1 = as.table(table(df8$coll_method))
+prop.table(Table_1)
+```
+
+
+
+```{r}
+knitr::kable(salvage_descend_genus[1:171,1:2], col.names = c("Genus", "Specimen Count"), caption = "Table 1.1: The total number of salvaged specimens representing each genera", format="markdown")
+
+knitr::kable(active_descend_genus[1:171,1:2], col.names = c("Genus", "Specimen Count"), caption = "Table 1.2: The total number of actively collected specimens representing each genera", format="markdown")
+
+knitr::kable(salvage_descend_county[1:171,1:2], col.names = c("County", "Specimen Count"), caption = "Table 2.1: The total number of salvaged specimens representing each county", format="markdown")
+
+knitr::kable(active_descend_county[1:171,1:2], col.names = c("County", "Specimen Count"), caption = "Table 2.2: The total number of actively collected specimens representing each county", format="markdown")
+
+```
+
+
+
+
