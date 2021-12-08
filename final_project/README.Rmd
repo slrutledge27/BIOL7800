@@ -18,4 +18,5 @@ Some prerequires:
 	+ if you have `Rstudio` installed, you can also use pandoc shipped with Rstudio
 
 ## Data/code Usage
+
 Please contact author at srutle6@lsu.edu if interested in utilizing data and/or code within repository
